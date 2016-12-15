@@ -13,6 +13,10 @@ from urllib import urlencode
 
 SUCCESS = 'success'
 blank_group = Group.objects.get(group_id='')
+def print_user():
+    users = WxUser.objects.all()
+    for user in users:
+        print user.session
 
 
 # Create your views here.
@@ -78,7 +82,9 @@ def upload_init(request):
         data = json.loads(request.body)
         f.write('data: ' + str(data) + '\n')
         session = data['session']
-        f.write('session: ' + session + '\n')
+        f.write('session1: ' + session + '\n')
+
+        f.write('session_in_database: ' + str(print_user()) + '\n')
 
         try:
             user = WxUser.objects.get(session=session)
@@ -88,7 +94,6 @@ def upload_init(request):
             user_info = data['userInfo']
 
             f.write('user_info: ' + str(user_info) + '\n')
-
             nick_name = user_info['nickName']
             gender = user_info['gender']
             province = user_info['province']
@@ -252,3 +257,6 @@ def dismiss(request):
             return JsonResponse({'status': 'fail'})
     except:
         return JsonResponse({'status': 'fail'})
+
+
+
