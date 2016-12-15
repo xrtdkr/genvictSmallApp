@@ -15,7 +15,6 @@ SUCCESS = 'success'
 blank_group = Group.objects.get(group_id='')
 
 
-
 # Create your views here.
 
 def wechat_login(request):
@@ -81,9 +80,8 @@ def upload_init(request):
         data = json.loads(request.body)
         f.write('data: ' + str(data) + '\n')
         session = data['session']
-        f.write('session1: ' + session + '\n')
-
-        f.write('session in database : ')
+        # f.write('session1: ' + session + '\n')
+        # f.write('session in database : ')
         for user in WxUser.objects.all():
             f.write(user.session)
 
@@ -120,9 +118,10 @@ def upload_init(request):
 
 def new_group(request):
     f = open('new_group.txt', 'a+')
-    f.write('=========log==========')
+    f.write('========= log ==========')
     try:
         data = json.loads(request.body)
+        f.write('data: ' + str(data) + '\n')
         session_upload = data['session']
         f.write('session: ' + session_upload + '\n')
 
@@ -132,9 +131,10 @@ def new_group(request):
 
             # 防止5位数字重复
             while (Group.objects.filter(group_id=group_id)):
+                f.write('this "while" has been running\n')
                 group_id = random_num_string()
 
-            f.write('group_id' + group_id + '\n')
+            f.write('group_id: ' + group_id + '\n')
 
             group = WxUser.objects.create(group_id=group_id)
 
@@ -258,6 +258,3 @@ def dismiss(request):
             return JsonResponse({'status': 'fail'})
     except:
         return JsonResponse({'status': 'fail'})
-
-
-
