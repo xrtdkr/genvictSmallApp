@@ -18,3 +18,7 @@ def random_num_string():
     return num
 
 
+def fileLogging(logging_var):
+    f = open('logging.txt', 'a+')
+    f.write('this step is' + ' : ' + logging_var + '\n')
+    f.close()

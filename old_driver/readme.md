@@ -14,14 +14,14 @@
 
 		userInfo:	{
 		    "openId": "OPENID",
-		    "nickName": "NICKNAME",			    	
-		    "gender": GENDER,
+		    "nickName": "NICKNAME",			    	"gender": GENDER,
 		    "city": "CITY",
 		    "province": "PROVINCE",
 		    "country": "COUNTRY",
 		    "avatarUrl": "AVATARURL",
 			},
 		code: xxx
+		sessionKey: xxx
 	}
 		  
 	返回：{status: success/fail}

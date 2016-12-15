@@ -1,0 +1,25 @@
+============wechat start===========
+code: asdkjfhalkjsdhfadsfasdf
+session_key: 
+session_key_url: https://api.weixin.qq.com/sns/oauth2/access_token?js_code=asdkjfhalkjsdhfadsfasdf&secret=a77f9cdd423011cfb2cae160c7f52316&grant_type=authorization_code&appid=wx158af007d90a970e
+session_key_ret: {"errcode":41008,"errmsg":"missing code, hints: [ req_id: LwX2eA0202ns82 ]"}
+============wechat start===========
+code: asdkjfhalkjsdhfadsfasdf
+session_key: 
+session_key_url: https://api.weixin.qq.com/sns/oauth2/access_token?js_code=asdkjfhalkjsdhfadsfasdf&secret=a77f9cdd423011cfb2cae160c7f52316&grant_type=authorization_code&appid=wx158af007d90a970e
+session_key_ret: {"errcode":41008,"errmsg":"missing code, hints: [ req_id: dOyIwa0867s113 ]"}
+============wechat start===========
+code: asdkjfhalkjsdhfadsfasdf
+session_key: 
+session_key_url: https://api.weixin.qq.com/sns/oauth2/access_token?js_code=asdkjfhalkjsdhfadsfasdf&secret=a77f9cdd423011cfb2cae160c7f52316&grant_type=authorization_code&appid=wx158af007d90a970e
+session_key_ret: {"errcode":41008,"errmsg":"missing code, hints: [ req_id: 1cxhFA0875ns80 ]"}
+============wechat start===========
+code: asdkjfhalkjsdhfadsfasdf
+session_key: 
+session_key_url: https://api.weixin.qq.com/sns/oauth2/access_token?js_code=asdkjfhalkjsdhfadsfasdf&secret=a77f9cdd423011cfb2cae160c7f52316&grant_type=authorization_code&appid=wx158af007d90a970e
+session_key_ret: {"errcode":41008,"errmsg":"missing code, hints: [ req_id: npV0877ns88 ]"}
+============wechat start===========
+code: asdkjfhalkjsdhfadsfasdf
+session_key: 
+session_key_url: https://api.weixin.qq.com/sns/oauth2/access_token?js_code=asdkjfhalkjsdhfadsfasdf&secret=a77f9cdd423011cfb2cae160c7f52316&grant_type=authorization_code&appid=wx158af007d90a970e
+session_key_ret: {"errcode":41008,"errmsg":"missing code, hints: [ req_id: ssLn0089s107 ]"}

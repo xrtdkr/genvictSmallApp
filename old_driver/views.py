@@ -26,53 +26,55 @@ def wechat_login(request):
         f = open("wechat_log.txt", "a+")
         f.write("============wechat start===========\n")
 
+        # 请求session_key_user
         code = request.POST.get('code', '')
         f.write('code: ' + code + '\n')
+        session_key_user = request.POST.get('session_key', '')
+        f.write('session_key: ' + session_key_user + '\n')
 
+        # 请求session_key_wxserver
         access_token_req_dict = {
             'appid': WECHAT_APPID,
             'secret': WECHAT_SECRET,
             'js_code': code,
             'grant_type': 'authorization_code',
         }
-
         session_key_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?' + urlencode(access_token_req_dict)
         f.write('session_key_url: ' + session_key_url + '\n')
-
         session_key_ret = urllib2.urlopen(session_key_url).read()
         f.write('session_key_ret: ' + session_key_ret + '\n')
-
         session_key_dict = json.loads(session_key_ret)
-
         openid = session_key_dict['openid']
-        session_key = session_key_dict['session_key']
+        session_key_wxserver = session_key_dict['session_key']
 
-        try:
-            userInfo = json.dumps(request.POST.get('userInfo', ''))
+        if session_key_wxserver != session_key_user:
+            # session key is not same
+            return JsonResponse({'status': 'login fail, sessionkey 不一样不能登录'})
+        else:
+            # session key is the same
+            # try:
+            #     f.write('userinfo write\n')
+            #     userInfo = json.dumps(request.POST.get('userInfo', ''))
+            # except:
+            #     f.write('user info read bug\n')
+            try:
 
+                ''' 数据库里面已经有现成的用户 '''
+                user = WxUser.objects.get(wx_openid=openid)
+                user.session = session_key_wxserver
+                f.close()
+                return JsonResponse({'status': 'login success,找到了已经有的用户'})
+            except:
 
-        except:
-            f.write('user info read bug\n')
-
-        try:
-            ''' 数据库里面已经有现成的用户 '''
-            user = WxUser.objects.get(wx_openid=openid)
-            user.session = session_key
-
-
-        except:
-            ''' 数据库中没有现成的用户 '''
-            user = WxUser.objects.create(wx_openid=openid, session=session_key)
-
-
-
-        f.close()
-        return JsonResponse({'status': 'success'})
+                ''' 数据库中没有现成的用户 '''
+                user = WxUser.objects.create(wx_openid=openid, session=session_key_wxserver)
+                f.close()
+                return JsonResponse({'status': 'login success,创建了一个新的用户'})
     except:
         f = open("wechat_test.txt", "a+")
         f.write('login failure')
         f.close()
-        return HttpResponse("login failure")
+        return HttpResponse("login failure, denglujiushishibaile")
 
 
 @require_POST
