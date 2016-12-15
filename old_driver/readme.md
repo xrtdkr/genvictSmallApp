@@ -14,7 +14,7 @@
 		code: xxx,
 	}
 		  
-	返回：{status: success/fail, session_key: xxx}
+	返回：{status: success/fail, sessionkey: xxx}
 	
 	
 ## 1.5 处理用户上传的初始数据
@@ -157,7 +157,12 @@
 	
 ## 10.图片分享
 	注意带上session
-	接口
+	接口：www.ebichu.cn/newPic/
+	方式: post
+	data:{
+		session: xxx,
+		
+	}
 	
 
 

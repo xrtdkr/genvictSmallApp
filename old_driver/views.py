@@ -71,13 +71,12 @@ def wechat_login(request):
         return HttpResponse("login failure, denglujiushishibaile")
 
 
-@require_POST
-def upload_init(request):
-    f = open('upload_init.txt', 'a+')
-    data = json.loads(request.body)
-    f.write('data: ' + data + '\n')
 
+def upload_init(request):
     try:
+        f = open('upload_init.txt', 'a+')
+        data = json.loads(request.body)
+        f.write('data: ' + data + '\n')
         session = data['session']
         f.write('session: ' + session + '\n')
 
@@ -111,10 +110,10 @@ def upload_init(request):
         return JsonResponse({'status': 'fail'})
 
 
-@require_POST
+
 def new_group(request):
-    data = json.loads(request.body)
     try:
+        data = json.loads(request.body)
         session_upload = data['session']
         try:
             user = WxUser.objects.get(session=session_upload)
@@ -143,10 +142,10 @@ def new_group(request):
         return JsonResponse({'status': 'fail'})
 
 
-@require_POST
+
 def join_group(request):
-    data = json.loads(request.body)
     try:
+        data = json.loads(request.body)
         ''' 处理没有带session的错误 '''
         session_upload = data['session']
 
@@ -176,10 +175,10 @@ def join_group(request):
         return JsonResponse({'status': 'fail'})
 
 
-@require_POST
+
 def refresh(request):
-    data = json.loads(request.body)
     try:
+        data = json.loads(request.body)
         session_upload = data['session']
         try:
             user = WxUser.objects.get(session=session_upload)
@@ -227,10 +226,10 @@ def refresh(request):
         return JsonResponse({'status': 'fail'})
 
 
-@require_POST
+
 def dismiss(request):
-    data = json.loads(request.body)
     try:
+        data = json.loads(request.body)
         session_upload = data['session']
         try:
             user = WxUser.objects.get(session=session_upload)
