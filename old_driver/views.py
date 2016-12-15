@@ -124,6 +124,8 @@ def new_group(request):
         f.write('data: ' + str(data) + '\n')
         session_upload = data['session']
         f.write('session: ' + session_upload + '\n')
+        for user in WxUser.objects.all():
+            f.write(user.session)
 
         try:
             user = WxUser.objects.get(session=session_upload)
@@ -136,7 +138,7 @@ def new_group(request):
 
                 f.write('group_id: ' + group_id + '\n')
 
-                group = WxUser.objects.create(group_id=group_id)
+                group = Group.objects.create(group_id=group_id)
 
                 longitude = data['longitude']
                 latitude = data['latitude']
