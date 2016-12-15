@@ -7,7 +7,7 @@ from django.db import models
 class Group(models.Model):
     ''' 组 '''
 
-    group_id = models.CharField(max_length=10)
+    group_id = models.CharField(max_length=10, blank=True)
 
     def __unicode__(self):
         return self.group_id
@@ -32,7 +32,7 @@ class WxUser(models.Model):
     latitude = models.CharField(max_length=20, default='30.748775')
     state = models.CharField(max_length=100, default='很高兴见到大家')
     isLeader = models.BooleanField(default=False)
-    group = models.ForeignKey(Group, related_name='group', blank=True)
+    group = models.ForeignKey(Group)
     order_in_group = models.IntegerField(default=0, blank=True)
 
     def __unicode__(self):

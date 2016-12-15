@@ -115,7 +115,7 @@
 					order: xxx,(用于显示那个0,1,2,3)
 					isLeader: xxx,若isLeader是True,那么order一定是0,
 					
-					longtitude:xxx,
+					longitude:xxx,
 					latitude:xxx,
 				},
 				...,
@@ -145,7 +145,7 @@
 		session: xxx,
 		groupID: xxxxx,
 	}
-	返回: {status: success/fail, session: xxxx}
+	返回: {status: success/fail}
 	
 ## 9.退出一个团队(待定。)
 	注意带上session
@@ -156,5 +156,7 @@
 		groupID: xxxxx,
 	}
 	返回: {status: success/fail, session: xxxx}
+	
+## 10.
 	
 	

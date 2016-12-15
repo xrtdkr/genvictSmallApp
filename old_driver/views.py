@@ -12,6 +12,7 @@ import json
 from urllib import urlencode
 
 SUCCESS = 'success'
+blank_group = Group.objects.get(group_id='')
 
 
 # Create your views here.
@@ -63,24 +64,27 @@ def wechat_login(request):
         return HttpResponse("login failure, denglujiushishibaile")
 
 
+@require_POST
 def upload_init(request):
     try:
         session_key = request.POST.get('sessionKey', '')
+        try:
+            user = WxUser.objects.get(session_key=session_key)
+            user_info = request.POST.get('userInfo')
+            openid = user_info['openId']
+            nick_name = user_info['nickName']
+            gender = user_info['gender']
+            province = user_info['province']
+            icon = user_info['avatarUrl']
 
-        user = WxUser.objects.get(session_key=session_key)
-        user_info = request.POST.get('userInfo')
-        openid = user_info['openId']
-        nick_name = user_info['nickName']
-        gender = user_info['gender']
-        province = user_info['province']
-        icon = user_info['avatarUrl']
-
-        user.wx_nickname = nick_name
-        user.gender = gender
-        user.province = province
-        user.icon_url = icon
-        user.save()
-        return JsonResponse({'status': 'success'})
+            user.wx_nickname = nick_name
+            user.gender = gender
+            user.province = province
+            user.icon_url = icon
+            user.save()
+            return JsonResponse({'status': 'success'})
+        except:
+            return JsonResponse({'status': 'fail'})
     except:
         return JsonResponse({'status': 'fail'})
 
@@ -117,8 +121,6 @@ def new_group(request):
 
 @require_POST
 def join_group(request):
-    session_upload = request.POST.get('session', '')
-
     try:
         ''' 处理没有带session的错误 '''
         session_upload = request.POST.get('session', '')
@@ -126,6 +128,10 @@ def join_group(request):
         try:
             ''' 处理没有对应的session的错误 '''
             user = WxUser.objects.get(session=session_upload)
+
+            if not user.group.group_id:
+                return JsonResponse({'status': 'fail'})
+
             longitude = request.POST.get('longitude', '')
             latitude = request.POST.GET('latitude', '')
             group_id = request.POST.get('groupID', '')
@@ -143,3 +149,74 @@ def join_group(request):
             return JsonResponse({'status': 'fail'})
     except:
         return JsonResponse({'status': 'fail'})
+
+
+@require_POST
+def refresh(request):
+    try:
+        session_upload = request.POST.get('session', '')
+        try:
+            user = WxUser.objects.get(session=session_upload)
+
+            # 已经查找到了已有用户
+
+            group_id = request.POST.get('groupID', '')
+            longitude = request.POST.get('longitude', '')
+            latitude = request.POST.get('latitude', '')
+            state = request.POST.get('state', '')
+
+            user.longitude = longitude
+            user.latitude = latitude
+            user.state = state
+
+            try:
+                # 找到了用户ID
+                group = Group.objects.get(group_id=group_id)
+                ret_data = {}
+                ret_data['isDismiss'] = False
+                ret_data['user'] = []
+                for user in group.wxuser_set.order_by(user.order_in_group):
+                    user_dict = {}
+                    user_dict['nickname'] = user.wx_nickname
+                    user_dict['iconurl'] = user.icon_url
+                    user_dict['state'] = user.state
+                    user_dict['order'] = user.order_in_group
+                    user_dict['isLeader'] = user.isLeader
+                    user_dict['longitude'] = user.longitude
+                    user_dict['latitude'] = user.latitude
+
+                    ret_data['user'].append(user_dict)
+
+                return JsonResponse(ret_data)
+            except:
+                return JsonResponse({'isDismiss': True, 'user': []})
+
+
+        except:
+            return JsonResponse({'status': 'fail'})
+
+    except:
+        return JsonResponse({'status': 'fail'})
+
+
+@require_POST
+def dismiss(request):
+    try:
+        session_upload = request.POST.get('session', '')
+        try:
+            user = WxUser.objects.get(session=session_upload)
+
+            group_id = user.group.group_id
+            if user.isLeader == True:
+                Group.objects.get(group_id=group_id).delete()
+                return JsonResponse({'status': 'success'})
+
+            else:
+                user.group=blank_group
+                return JsonResponse({'status': 'success'})
+        except:
+            return JsonResponse({'status': 'fail'})
+    except:
+        return JsonResponse({'status': 'fail'})
+
+
