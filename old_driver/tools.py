@@ -3,6 +3,8 @@ import hashlib
 import random
 
 
+settings.configure()
+
 def session_init(datetime):
     salt = 'xiaochengxu'
     datetime = str(datetime)
@@ -24,4 +26,5 @@ def fileLogging(logging_var):
     f.close()
 
 
-print random_num_string()
+
+

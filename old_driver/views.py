@@ -192,6 +192,8 @@ def join_group(request):
 
 
 def refresh(request):
+    f = open('refresh.txt', 'a+')
+
     try:
         data = json.loads(request.body)
         session_upload = data['session']
@@ -213,11 +215,13 @@ def refresh(request):
 
             try:
                 # 找到了用户ID
+                f.write('找到了用户ID \n')
                 group = Group.objects.get(group_id=group_id)
+
                 ret_data = {}
                 ret_data['isDismiss'] = False
                 ret_data['user'] = []
-                for user in group.wxuser_set.order_by(user.order_in_group):
+                for user in group.wxuser_set:
                     user_dict = {}
                     user_dict['nickname'] = user.wx_nickname
                     user_dict['iconurl'] = user.icon_url
@@ -226,13 +230,13 @@ def refresh(request):
                     user_dict['isLeader'] = user.isLeader
                     user_dict['longitude'] = user.longitude
                     user_dict['latitude'] = user.latitude
-
                     ret_data['user'].append(user_dict)
+                    f.write('user_dict: ' + str(user_dict) + '\n')
 
+                f.write('ret_data: ' + str(ret_data) + '\n')
                 return JsonResponse(ret_data)
             except:
                 return JsonResponse({'isDismiss': True, 'user': []})
-
 
         except:
             return JsonResponse({'status': 'fail'})
