@@ -193,7 +193,7 @@ def join_group(request):
 
 def refresh(request):
     f = open('refresh.txt', 'a+')
-
+    f.write('===========log=======\n')
     try:
         data = json.loads(request.body)
         session_upload = data['session']
@@ -212,10 +212,10 @@ def refresh(request):
             user.state = state
 
             group_id = user.group.group_id
-
+            f.write('group id: ' + group_id + '\n')
             try:
                 # 找到了用户ID
-                f.write('找到了用户ID \n')
+                f.write('find user id \n')
                 group = Group.objects.get(group_id=group_id)
 
                 ret_data = {}
@@ -234,8 +234,10 @@ def refresh(request):
                     f.write('user_dict: ' + str(user_dict) + '\n')
 
                 f.write('ret_data: ' + str(ret_data) + '\n')
+                f.close()
                 return JsonResponse(ret_data)
             except:
+                f.close()
                 return JsonResponse({'isDismiss': True, 'user': []})
 
         except:
