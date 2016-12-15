@@ -7,55 +7,67 @@ from django.views.decorators.http import require_POST, require_GET
 from genvicSmallApp.settings import WECHAT_APPID, WECHAT_SECRET
 from old_driver.models import WxUser, Group
 from tools import *
+import urllib2
+import json
+from urllib import urlencode
+
+SUCCESS = 'success'
 
 
 # Create your views here.
 
 def wechat_login(request):
+    '''
+    流程是这样的，前端请求到了session_key和open_id，所以它把code给我们，我们也请求到了openid和session_key，所以我们就可以用
+    微信所持有的session_key作为用户的session状态使用。即：登录中，未登录。
+    '''
     try:
-        f = open("wechat_test.txt", "a+")
+
+        f = open("wechat_log.txt", "a+")
         f.write("============wechat start===========\n")
-        code = request.GET['code']
+
+        code = request.POST.get('code', '')
         f.write('code: ' + code + '\n')
 
         access_token_req_dict = {
             'appid': WECHAT_APPID,
             'secret': WECHAT_SECRET,
-            'code': code,
+            'js_code': code,
             'grant_type': 'authorization_code',
         }
 
-        address_token_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?' + urlencode(access_token_req_dict)
-        f.write('address_token_url: ' + address_token_url + '\n')
+        session_key_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?' + urlencode(access_token_req_dict)
+        f.write('session_key_url: ' + session_key_url + '\n')
 
-        access_token_ret = urllib2.urlopen(address_token_url).read()
-        f.write('access_token_url: ' + access_token_ret + '\n')
+        session_key_ret = urllib2.urlopen(session_key_url).read()
+        f.write('session_key_ret: ' + session_key_ret + '\n')
 
-        access_token_dict = json.loads(access_token_ret)
-        access_token = access_token_dict['access_token']
-        expires_in = access_token_dict['expires_in']
-        openid = access_token_dict['openid']
-        scope = access_token_dict['scope']
+        session_key_dict = json.loads(session_key_ret)
 
-        tmp_dict = {
-            'access_token': access_token,
-            'openid': openid,
-        }
-        address3 = 'https://api.weixin.qq.com/sns/userinfo?' + urlencode(tmp_dict)
+        openid = session_key_dict['openid']
+        session_key = session_key_dict['session_key']
 
-        wx_user_info = urllib2.urlopen(address3).read()
+        try:
+            userInfo = json.dumps(request.POST.get('userInfo', ''))
 
-        wx_user = json.loads(wx_user_info)
-        nickname = wx_user['nickname']
-        openid = wx_user['openid']
-        headimgurl = wx_user['headimgurl']
 
-        f.write('wx_user_info: ' + wx_user_info + '\n')
+        except:
+            f.write('user info read bug\n')
+
+        try:
+            ''' 数据库里面已经有现成的用户 '''
+            user = WxUser.objects.get(wx_openid=openid)
+            user.session = session_key
+
+
+        except:
+            ''' 数据库中没有现成的用户 '''
+            user = WxUser.objects.create(wx_openid=openid, session=session_key)
+
+
+
         f.close()
-
-        current_user = TmpUser(username=nickname, icon=headimgurl)
-        return render_to_response('frontEnd/account.html', {'login_flag': True, 'current_user': current_user},
-                                  context_instance=RequestContext(request))
+        return JsonResponse({'status': 'success'})
     except:
         f = open("wechat_test.txt", "a+")
         f.write('login failure')
@@ -69,7 +81,7 @@ def new_group(request):
         session_upload = request.POST.get('session', '')
         try:
             user = WxUser.objects.get(session=session_upload)
-            group_id=random_num_string()
+            group_id = random_num_string()
 
             while not (Group.objects.filter(group_id=group_id)):
                 group_id = random_num_string()
@@ -113,7 +125,7 @@ def join_group(request):
             user.latitude = latitude
             user.isLeader = False
             user.group = group
-            user.order_in_group = len(group.objects.all())-1
+            user.order_in_group = len(group.objects.all()) - 1
             user.save()
 
             return JsonResponse({'status': 'success'})
@@ -121,7 +133,3 @@ def join_group(request):
             return JsonResponse({'status': 'fail'})
     except:
         return JsonResponse({'status': 'fail'})
-
-
-
-

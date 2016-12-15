@@ -8,10 +8,23 @@
 
 ## 1. 处理用户登录
 	接口：url: www.ebizhu.cn/login/
-		  data: {code: res.code}
+		  data: {code: xxx}
 	方式: post
+	{
+
+		userInfo:	{
+		    "openId": "OPENID",
+		    "nickName": "NICKNAME",			    	
+		    "gender": GENDER,
+		    "city": "CITY",
+		    "province": "PROVINCE",
+		    "country": "COUNTRY",
+		    "avatarUrl": "AVATARURL",
+			},
+		code: xxx
+	}
 		  
-	返回：{status: success/fail, session: xxxx}
+	返回：{status: success/fail}
 
 
 

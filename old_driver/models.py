@@ -19,14 +19,13 @@ class WxUser(models.Model):
     ''' 唯一验证信息 '''
     wx_openid = models.CharField(max_length=100)
     session = models.CharField(max_length=100)
-    login_flag = models.BooleanField(default=False)
 
     ''' 基本信息 '''
-    wx_icon = models.CharField(max_length=100)  # 用来存储用户的头像
-    wx_nickname = models.CharField(max_length=20)  # 用来存储用户的昵称
+    wx_icon = models.CharField(max_length=100, blank=True)  # 用来存储用户的头像
+    wx_nickname = models.CharField(max_length=20, blank=True)  # 用来存储用户的昵称
     gender = models.IntegerField(default=1, blank=True)  # 用户的性别，留作接口，1是男生，0是女生
-    province = models.CharField(max_length=10)
-    icon_url = models.CharField(max_length=200)  # 对应的是微信里面的AVATARURL
+    province = models.CharField(max_length=10, blank=True)
+    icon_url = models.CharField(max_length=200, blank=True)  # 对应的是微信里面的AVATARURL
 
     ''' 应用信息 '''
     longitude = models.CharField(max_length=20, default='103.930662')
