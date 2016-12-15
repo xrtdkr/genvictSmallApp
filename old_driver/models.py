@@ -21,7 +21,7 @@ class WxUser(models.Model):
     session = models.CharField(max_length=100)
 
     ''' 基本信息 '''
-    wx_icon = models.CharField(max_length=100, blank=True)  # 用来存储用户的头像
+    # wx_icon = models.CharField(max_length=100, blank=True)  # 用来存储用户的头像
     wx_nickname = models.CharField(max_length=20, blank=True)  # 用来存储用户的昵称
     gender = models.IntegerField(default=1, blank=True)  # 用户的性别，留作接口，1是男生，0是女生
     province = models.CharField(max_length=10, blank=True)
@@ -33,7 +33,7 @@ class WxUser(models.Model):
     state = models.CharField(max_length=100, default='很高兴见到大家')
     isLeader = models.BooleanField(default=False)
     group = models.ForeignKey(Group, related_name='group', blank=True)
-    order_in_group = models.IntegerField(default=0)
+    order_in_group = models.IntegerField(default=0, blank=True)
 
     def __unicode__(self):
-        return self.wx_nickname
+        return self.wx_openid

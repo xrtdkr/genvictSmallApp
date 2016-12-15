@@ -7,30 +7,41 @@
 	返回值：xxxxxx
 
 ## 1. 处理用户登录
-	接口：url: www.ebizhu.cn/login/
+	接口：url: www.ebichu.cn/login/
 		  data: {code: xxx}
 	方式: post
 	{
-
-		userInfo:	{
-		    "openId": "OPENID",
-		    "nickName": "NICKNAME",			    	"gender": GENDER,
-		    "city": "CITY",
-		    "province": "PROVINCE",
-		    "country": "COUNTRY",
-		    "avatarUrl": "AVATARURL",
-			},
-		code: xxx
-		sessionKey: xxx
+		code: xxx,
+		expires_in: xxx,
 	}
 		  
-	返回：{status: success/fail}
+	返回：{status: success/fail, session_key: xxx}
+	
+	
+## 1.5 处理用户上传的初始数据
+	接口：url: www.ebichu.com/upload/
+		data:{
+			session_key:xxx,
+			userInfo:
+				{
+	    			"openId": "OPENID",
+	    			"nickName": "NICKNAME",
+				    "gender": GENDER,
+				    "city": "CITY",
+				    "province": "PROVINCE",
+				    "country": "COUNTRY",
+				    "avatarUrl": "AVATARURL",
+			    }
+
+		}
+		
+	返回{status: success/fail}
 
 
 
 ## 2. 请求刷新用户数据(在创建了group以前进行刷新)
 	注意带上session
-	接口: www.ebizhu.cn/fresh/
+	接口: www.ebichu.cn/fresh/
 	方式: post
 	data: {
 		session: xxx,
@@ -43,7 +54,7 @@
 	
 ## 3. 请求创建一个小组
 	注意带上我所给的session
-	接口： www.ebizhu.cn/newGrowp/
+	接口： www.ebichu.cn/newGrowp/
 	方式：post
 	data:{
 	
@@ -65,7 +76,7 @@
 	
 ## 4. 请求加入一个小组
 	注意带上我所给的session
-	接口： www.ebizhu.cn/joinGroup/
+	接口： www.ebichu.cn/joinGroup/
 	方式：post
 	data:{
 		groupID: xxxxx,
@@ -81,7 +92,7 @@
 	
 ## 7. 请求刷新用户数据(在创建了group以后进行刷新)
 	注意带上session
-	接口: www.ebizhu.cn/refresh/
+	接口: www.ebichu.cn/refresh/
 	方式: post
 	data: {
 		session: xxx,
@@ -128,7 +139,7 @@
 	
 ## 8.leader解散一个团队
 	注意带上session
-	接口: www.ebizhu.cn/dismiss/
+	接口: www.ebichu.cn/dismiss/
 	方式: post
 	data: {
 		session: xxx,
@@ -138,7 +149,7 @@
 	
 ## 9.退出一个团队(待定。)
 	注意带上session
-	接口: www.ebizhu.cn/logout/
+	接口: www.ebichu.cn/logout/
 	方式: post
 	data: {
 		session: xxx,
