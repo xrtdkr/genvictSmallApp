@@ -131,26 +131,26 @@ def new_group(request):
 
             if user.group.group_id:
                 return JsonResponse({'status': 'fail, user has in a group'})
+            else:
+                group_id = random_num_string()
 
-            group_id = random_num_string()
+                f.write('group_id: ' + group_id + '\n')
 
-            f.write('group_id: ' + group_id + '\n')
+                group = WxUser.objects.create(group_id=group_id)
 
-            group = WxUser.objects.create(group_id=group_id)
+                longitude = data['longitude']
+                latitude = data['latitude']
+                # group 创建成功
 
-            longitude = data['longitude']
-            latitude = data['latitude']
-            # group 创建成功
-
-            user.longitude = longitude
-            user.latitude = latitude
-            user.group = group
-            user.isLeader = True
-            user.order_in_group = 0
-            user.save()
-            f.write('new group success')
-            # user 更新成功
-            return JsonResponse({'status': 'success', 'groupID': group_id})
+                user.longitude = longitude
+                user.latitude = latitude
+                user.group = group
+                user.isLeader = True
+                user.order_in_group = 0
+                user.save()
+                f.write('new group success')
+                # user 更新成功
+                return JsonResponse({'status': 'success', 'groupID': group_id})
         except:
             return JsonResponse({'status': 'fail'})
     except:
@@ -179,7 +179,7 @@ def join_group(request):
             user.latitude = latitude
             user.isLeader = False
             user.group = group
-            user.order_in_group = len(group.objects.all()) - 1
+            user.order_in_group = len(group.objects.all())
             user.save()
 
             return JsonResponse({'status': 'success'})
