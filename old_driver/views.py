@@ -222,7 +222,7 @@ def refresh(request):
                 ret_data['isDismiss'] = False
                 ret_data['user'] = []
                 f.write('before for')
-                for user in group.wxuser_set:
+                for user in group.wxuser_set.all():
                     f.write('1')
                     user_dict = {}
                     f.write('2')
