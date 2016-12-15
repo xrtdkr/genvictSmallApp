@@ -43,17 +43,23 @@ def wechat_login(request):
         f.write('session_key_url: ' + session_key_url + '\n')
         session_key_ret = urllib2.urlopen(session_key_url).read()
         f.write('session_key_ret: ' + session_key_ret + '\n')
+
         session_key_dict = json.loads(session_key_ret)
+
         openid = session_key_dict['openid']
         session_key_wxserver = session_key_dict['session_key']
+
+        f.write('openid:' + openid + '\n')
+        f.write('session_key_wxserver:' + session_key_wxserver + '\n')
         try:
             # ''' 数据库里面已经有现成的用户 '''
+            f.write('choice1'+'\n')
             user = WxUser.objects.get(wx_openid=openid)
             user.session = session_key_wxserver
             f.close()
             return JsonResponse({'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver})
         except:
-
+            f.write('choice2'+'\n')
             # ''' 数据库中没有现成的用户 '''
             user = WxUser.objects.create(wx_openid=openid, session=session_key_wxserver)
             f.close()
