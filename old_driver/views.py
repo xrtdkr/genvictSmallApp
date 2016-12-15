@@ -71,7 +71,6 @@ def wechat_login(request):
         return HttpResponse("login failure, denglujiushishibaile")
 
 
-
 def upload_init(request):
     try:
         f = open('upload_init.txt', 'a+')
@@ -113,19 +112,25 @@ def upload_init(request):
         return JsonResponse({'status': 'fail'})
 
 
-
 def new_group(request):
+    f = open('new_group.txt', 'a+')
+    f.write('=========log==========')
     try:
         data = json.loads(request.body)
         session_upload = data['session']
+        f.write('session: ' + session_upload + '\n')
+
         try:
             user = WxUser.objects.get(session=session_upload)
             group_id = random_num_string()
 
-            while not (Group.objects.filter(group_id=group_id)):
+            # 防止5位数字重复
+            while (Group.objects.filter(group_id=group_id)):
                 group_id = random_num_string()
 
-            group = WxUser.objects.create(group_id=random_num_string())
+            f.write('group_id' + group_id + '\n')
+
+            group = WxUser.objects.create(group_id=group_id)
 
             longitude = data['longitude']
             latitude = data['latitude']
@@ -137,13 +142,13 @@ def new_group(request):
             user.isLeader = True
             user.order_in_group = 0
             user.save()
+            f.write('new group success')
             # user 更新成功
             return JsonResponse({'status': 'success', 'groupID': group_id})
         except:
             return JsonResponse({'status': 'fail'})
     except:
         return JsonResponse({'status': 'fail'})
-
 
 
 def join_group(request):
@@ -176,7 +181,6 @@ def join_group(request):
             return JsonResponse({'status': 'fail', 'reason': 'session reveal no user'})
     except:
         return JsonResponse({'status': 'fail'})
-
 
 
 def refresh(request):
@@ -227,7 +231,6 @@ def refresh(request):
 
     except:
         return JsonResponse({'status': 'fail'})
-
 
 
 def dismiss(request):
