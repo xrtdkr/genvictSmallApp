@@ -23,7 +23,6 @@
 			session_key:xxx,
 			userInfo:
 				{
-	    			"openId": "OPENID",
 	    			"nickName": "NICKNAME",
 				    "gender": GENDER,
 				    "city": "CITY",

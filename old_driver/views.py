@@ -27,11 +27,11 @@ def wechat_login(request):
         f = open("wechat_log.txt", "a+")
         f.write("============wechat start===========\n")
 
-        # 请求session_key_user
-        code = request.POST.get('code', '')
-        f.write('code: ' + code + '\n')
-
         f.write('request-body: ' + request.body + '\n')
+        data = json.loads(request.body)
+        # 请求session_key_user
+        code = data['code']
+        f.write('code: ' + code + '\n')
         # 请求session_key_wxserver
         access_token_req_dict = {
             'appid': WECHAT_APPID,
@@ -39,7 +39,7 @@ def wechat_login(request):
             'js_code': code,
             'grant_type': 'authorization_code',
         }
-        session_key_url = 'https://api.weixin.qq.com/sns/oauth2/access_token?' + urlencode(access_token_req_dict)
+        session_key_url = 'https://api.weixin.qq.com/sns/jscode2session?' + urlencode(access_token_req_dict)
         f.write('session_key_url: ' + session_key_url + '\n')
         session_key_ret = urllib2.urlopen(session_key_url).read()
         f.write('session_key_ret: ' + session_key_ret + '\n')
@@ -213,11 +213,9 @@ def dismiss(request):
                 return JsonResponse({'status': 'success'})
 
             else:
-                user.group=blank_group
+                user.group = blank_group
                 return JsonResponse({'status': 'success'})
         except:
             return JsonResponse({'status': 'fail'})
     except:
         return JsonResponse({'status': 'fail'})
-
-
