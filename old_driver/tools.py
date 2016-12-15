@@ -3,8 +3,6 @@ import hashlib
 import random
 
 
-settings.configure()
-
 def session_init(datetime):
     salt = 'xiaochengxu'
     datetime = str(datetime)
