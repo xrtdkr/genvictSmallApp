@@ -221,14 +221,23 @@ def refresh(request):
                 ret_data = {}
                 ret_data['isDismiss'] = False
                 ret_data['user'] = []
+                f.write('before for')
                 for user in group.wxuser_set:
+                    f.write('1')
                     user_dict = {}
+                    f.write('2')
                     user_dict['nickname'] = user.wx_nickname
+                    f.write('3')
                     user_dict['iconurl'] = user.icon_url
+                    f.write('4')
                     user_dict['state'] = user.state
+                    f.write('5')
                     user_dict['order'] = user.order_in_group
+                    f.write('6')
                     user_dict['isLeader'] = user.isLeader
+                    f.write('7')
                     user_dict['longitude'] = user.longitude
+                    f.write('8')
                     user_dict['latitude'] = user.latitude
                     ret_data['user'].append(user_dict)
                     f.write('user_dict: ' + str(user_dict) + '\n')
