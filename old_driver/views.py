@@ -13,10 +13,7 @@ from urllib import urlencode
 
 SUCCESS = 'success'
 blank_group = Group.objects.get(group_id='')
-def print_user():
-    users = WxUser.objects.all()
-    for user in users:
-        print user.session
+
 
 
 # Create your views here.
@@ -84,7 +81,9 @@ def upload_init(request):
         session = data['session']
         f.write('session1: ' + session + '\n')
 
-        f.write('session_in_database: ' + str(print_user()) + '\n')
+        f.write('session in database : ')
+        for user in WxUser.objects.all():
+            f.write(user.session)
 
         try:
             user = WxUser.objects.get(session=session)
