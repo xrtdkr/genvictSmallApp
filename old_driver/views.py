@@ -75,6 +75,7 @@ def wechat_login(request):
 def upload_init(request):
     try:
         f = open('upload_init.txt', 'a+')
+        f.write('=====logging start=====\n')
         data = json.loads(request.body)
         f.write('data: ' + str(data) + '\n')
         session = data['session']
@@ -82,6 +83,8 @@ def upload_init(request):
 
         try:
             user = WxUser.objects.get(session=session)
+
+            f.write('get user \n')
 
             user_info = data['userInfo']
 
