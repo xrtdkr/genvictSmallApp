@@ -124,8 +124,9 @@ def new_group(request):
         f.write('data: ' + str(data) + '\n')
         session_upload = data['session']
         f.write('session: ' + session_upload + '\n')
-        for user in WxUser.objects.all():
-            f.write(user.session)
+
+        # for user in WxUser.objects.all():
+        #     f.write(user.session)
 
         try:
             user = WxUser.objects.get(session=session_upload)
