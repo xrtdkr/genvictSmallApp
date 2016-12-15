@@ -22,3 +22,6 @@ def fileLogging(logging_var):
     f = open('logging.txt', 'a+')
     f.write('this step is' + ' : ' + logging_var + '\n')
     f.close()
+
+
+print random_num_string()

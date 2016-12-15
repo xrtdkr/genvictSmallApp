@@ -127,12 +127,12 @@ def new_group(request):
 
         try:
             user = WxUser.objects.get(session=session_upload)
-            group_id = random_num_string()
+            f.write('user get \n')
 
-            # 防止5位数字重复
-            while (Group.objects.filter(group_id=group_id)):
-                f.write('this "while" has been running\n')
-                group_id = random_num_string()
+            if user.group.group_id:
+                return JsonResponse({'status': 'fail, user has in a group'})
+
+            group_id = random_num_string()
 
             f.write('group_id: ' + group_id + '\n')
 
@@ -245,15 +245,15 @@ def dismiss(request):
         session_upload = data['session']
         try:
             user = WxUser.objects.get(session=session_upload)
-
             group_id = user.group.group_id
             if user.isLeader == True:
                 Group.objects.get(group_id=group_id).delete()
-                return JsonResponse({'status': 'success'})
+                return JsonResponse({'status': 'success, leader dismiss'})
 
             else:
                 user.group = blank_group
-                return JsonResponse({'status': 'success'})
+                user.save()
+                return JsonResponse({'status': 'success, member logout'})
         except:
             return JsonResponse({'status': 'fail'})
     except:
