@@ -76,7 +76,7 @@ def upload_init(request):
     try:
         f = open('upload_init.txt', 'a+')
         data = json.loads(request.body)
-        f.write('data: ' + data + '\n')
+        f.write('data: ' + str(data) + '\n')
         session = data['session']
         f.write('session: ' + session + '\n')
 
