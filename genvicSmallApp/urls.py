@@ -20,5 +20,11 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^login/', 'old_driver.views.wechat_login'),
+    url(r'^upload/', 'old_driver.views.upload_init'),
+    url(r'^fresh/', 'old_driver.views.refresh'),
+    url(r'^newGroup/', 'old_driver.views.new_group'),
+    url(r'^joinGroup/', 'old_driver.views.join_group'),
+    url(r'^refresh/', 'old_driver.views.refresh'),
+    url(r'dismiss/', 'old_driver.views.dismiss'),
 ]
 
