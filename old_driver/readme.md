@@ -20,7 +20,7 @@
 ## 1.5 处理用户上传的初始数据
 	接口：url: www.ebichu.com/upload/
 		data:{
-			session_key:xxx,
+			session: xxx,
 			userInfo:
 				{
 	    			"nickName": "NICKNAME",
@@ -156,6 +156,9 @@
 	返回: {status: success/fail, session: xxxx}
 	
 ## 10.图片分享
+	注意带上session
+	接口
+	
 
 
 	

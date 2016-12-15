@@ -24,14 +24,14 @@ def wechat_login(request):
     '''
     try:
 
-        f = open("wechat_log.txt", "a+")
-        f.write("============wechat start===========\n")
+        # f = open("wechat_log.txt", "a+")
+        # f.write("============wechat start===========\n")
 
-        f.write('request-body: ' + request.body + '\n')
+        # f.write('request-body: ' + request.body + '\n')
         data = json.loads(request.body)
         # 请求session_key_user
         code = data['code']
-        f.write('code: ' + code + '\n')
+        # f.write('code: ' + code + '\n')
         # 请求session_key_wxserver
         access_token_req_dict = {
             'appid': WECHAT_APPID,
@@ -40,45 +40,54 @@ def wechat_login(request):
             'grant_type': 'authorization_code',
         }
         session_key_url = 'https://api.weixin.qq.com/sns/jscode2session?' + urlencode(access_token_req_dict)
-        f.write('session_key_url: ' + session_key_url + '\n')
+        # f.write('session_key_url: ' + session_key_url + '\n')
         session_key_ret = urllib2.urlopen(session_key_url).read()
-        f.write('session_key_ret: ' + session_key_ret + '\n')
+        # f.write('session_key_ret: ' + session_key_ret + '\n')
 
         session_key_dict = json.loads(session_key_ret)
 
         openid = session_key_dict['openid']
         session_key_wxserver = session_key_dict['session_key']
 
-        f.write('openid:' + openid + '\n')
-        f.write('session_key_wxserver:' + session_key_wxserver + '\n')
+        # f.write('openid:' + openid + '\n')
+        # f.write('session_key_wxserver:' + session_key_wxserver + '\n')
         try:
-            # ''' 数据库里面已经有现成的用户 '''
-            f.write('choice1'+'\n')
+            ''' 数据库里面已经有现成的用户 '''
+            # f.write('choice1'+'\n')
             user = WxUser.objects.get(wx_openid=openid)
             user.session = session_key_wxserver
-            f.close()
+            # f.close()
             return JsonResponse({'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver})
         except:
-            f.write('choice2'+'\n')
+            # f.write('choice2'+'\n')
             # ''' 数据库中没有现成的用户 '''
             user = WxUser.objects.create(wx_openid=openid, session=session_key_wxserver, group=blank_group)
-            f.close()
+            # f.close()
             return JsonResponse({'status': 'login success,创建了一个新的用户', 'sessionKey': session_key_wxserver})
     except:
-        f = open("wechat_test.txt", "a+")
-        f.write('login failure')
-        f.close()
+        # f = open("wechat_test.txt", "a+")
+        # f.write('login failure')
+        # f.close()
         return HttpResponse("login failure, denglujiushishibaile")
 
 
 @require_POST
 def upload_init(request):
+    f = open('upload_init.txt', 'a+')
+    data = json.loads(request.body)
+    f.write('data: ' + data + '\n')
+
     try:
-        session_key = request.POST.get('sessionKey', '')
+        session = data['session']
+        f.write('session: ' + session + '\n')
+
         try:
-            user = WxUser.objects.get(session_key=session_key)
-            user_info = request.POST.get('userInfo')
-            openid = user_info['openId']
+            user = WxUser.objects.get(session=session)
+
+            user_info = data['userInfo']
+
+            f.write('user_info: ' + str(user_info) + '\n')
+
             nick_name = user_info['nickName']
             gender = user_info['gender']
             province = user_info['province']
@@ -89,17 +98,24 @@ def upload_init(request):
             user.province = province
             user.icon_url = icon
             user.save()
+            f.write(' user init success' + '\n')
+            f.close()
             return JsonResponse({'status': 'success'})
         except:
+            f.write('choice1' + '\n')
+            f.close()
             return JsonResponse({'status': 'fail'})
     except:
+        f.write('choice2' + '\n')
+        f.close()
         return JsonResponse({'status': 'fail'})
 
 
 @require_POST
 def new_group(request):
+    data = json.loads(request.body)
     try:
-        session_upload = request.POST.get('session', '')
+        session_upload = data['session']
         try:
             user = WxUser.objects.get(session=session_upload)
             group_id = random_num_string()
@@ -108,8 +124,9 @@ def new_group(request):
                 group_id = random_num_string()
 
             group = WxUser.objects.create(group_id=random_num_string())
-            longitude = request.POST.get('longitude', '')
-            latitude = request.POST.GET('latitude', '')
+
+            longitude = data['longitude']
+            latitude = data['latitude']
             # group 创建成功
 
             user.longitude = longitude
@@ -128,20 +145,21 @@ def new_group(request):
 
 @require_POST
 def join_group(request):
+    data = json.loads(request.body)
     try:
         ''' 处理没有带session的错误 '''
-        session_upload = request.POST.get('session', '')
+        session_upload = data['session']
 
         try:
             ''' 处理没有对应的session的错误 '''
             user = WxUser.objects.get(session=session_upload)
 
-            if not user.group.group_id:
-                return JsonResponse({'status': 'fail'})
+            if user.group.group_id:
+                return JsonResponse({'status': 'fail', 'reason': '已经加入了其他小队'})
 
-            longitude = request.POST.get('longitude', '')
-            latitude = request.POST.GET('latitude', '')
-            group_id = request.POST.get('groupID', '')
+            longitude = data['longitude']
+            latitude = data['latitude']
+            group_id = data['groupID']
 
             group = Group.objects.get(group_id=group_id)
             user.longitude = longitude
@@ -153,28 +171,31 @@ def join_group(request):
 
             return JsonResponse({'status': 'success'})
         except:
-            return JsonResponse({'status': 'fail'})
+            return JsonResponse({'status': 'fail', 'reason': 'session reveal no user'})
     except:
         return JsonResponse({'status': 'fail'})
 
 
 @require_POST
 def refresh(request):
+    data = json.loads(request.body)
     try:
-        session_upload = request.POST.get('session', '')
+        session_upload = data['session']
         try:
             user = WxUser.objects.get(session=session_upload)
 
             # 已经查找到了已有用户
 
-            group_id = request.POST.get('groupID', '')
-            longitude = request.POST.get('longitude', '')
-            latitude = request.POST.get('latitude', '')
-            state = request.POST.get('state', '')
+            longitude = data['longitude']
+            latitude = data['latitude']
+            state = data['state']
 
+            # save the attr
             user.longitude = longitude
             user.latitude = latitude
             user.state = state
+
+            group_id = user.group.group_id
 
             try:
                 # 找到了用户ID
@@ -208,8 +229,9 @@ def refresh(request):
 
 @require_POST
 def dismiss(request):
+    data = json.loads(request.body)
     try:
-        session_upload = request.POST.get('session', '')
+        session_upload = data['session']
         try:
             user = WxUser.objects.get(session=session_upload)
 
