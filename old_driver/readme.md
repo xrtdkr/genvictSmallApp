@@ -12,7 +12,6 @@
 	方式: post
 	{
 		code: xxx,
-		expires_in: xxx,
 	}
 		  
 	返回：{status: success/fail, session_key: xxx}
@@ -157,6 +156,8 @@
 	}
 	返回: {status: success/fail, session: xxxx}
 	
-## 10.
+## 10.图片分享
+
+
 	
 	

@@ -31,6 +31,7 @@ def wechat_login(request):
         code = request.POST.get('code', '')
         f.write('code: ' + code + '\n')
 
+        f.write('request-body: ' + request.body + '\n')
         # 请求session_key_wxserver
         access_token_req_dict = {
             'appid': WECHAT_APPID,
