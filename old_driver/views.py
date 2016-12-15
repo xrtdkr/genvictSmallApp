@@ -57,6 +57,7 @@ def wechat_login(request):
             # f.write('choice1'+'\n')
             user = WxUser.objects.get(wx_openid=openid)
             user.session = session_key_wxserver
+            user.save()
             # f.close()
             return JsonResponse({'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver})
         except:
@@ -64,6 +65,7 @@ def wechat_login(request):
             # ''' 数据库中没有现成的用户 '''
             user = WxUser.objects.create(wx_openid=openid, session=session_key_wxserver, group=blank_group)
             # f.close()
+            user.save()
             return JsonResponse({'status': 'login success,创建了一个新的用户', 'sessionKey': session_key_wxserver})
     except:
         # f = open("wechat_test.txt", "a+")
