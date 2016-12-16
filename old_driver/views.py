@@ -199,9 +199,10 @@ def join_group(request):
             print group_id
             try:
                 print 'after try'
+
                 group = Group.objects.get(group_id=group_id)
 
-                print group
+                # print group:
                 user.longitude = longitude
                 user.latitude = latitude
                 user.isLeader = False
@@ -342,10 +343,7 @@ def refresh_pic(request):
     except:
         return JsonResponse({'status': 'fail, session did not get'})
 
-
-
 # 这边的请求头的content-type是multi
 
 # def new_pic(request):
 #     try:
-
