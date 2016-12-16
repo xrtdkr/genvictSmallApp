@@ -14,7 +14,7 @@
 		code: xxx,
 	}
 		  
-	返回：{status: success/fail, sessionkey: xxx}
+	返回：{status: success/fail, sessionkey: xxx,}
 	
 	
 ## 1.5 处理用户上传的初始数据

@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="7e009dea-fabf-4b73-bde9-fc5015ea29f4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/old_driver/readme.md" afterPath="$PROJECT_DIR$/old_driver/readme.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/old_driver/views.py" afterPath="$PROJECT_DIR$/old_driver/views.py" />
     </list>
     <ignored path="genvicSmallApp.iws" />
@@ -49,8 +50,8 @@
           <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/old_driver/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="159">
-                  <caret line="127" column="43" selection-start-line="127" selection-start-column="43" selection-end-line="127" selection-end-column="43" />
+                <state relative-caret-position="630">
+                  <caret line="61" column="125" selection-start-line="61" selection-start-column="125" selection-end-line="61" selection-end-column="125" />
                   <folding>
                     <element signature="e#16#51#0" expanded="true" />
                   </folding>
@@ -984,8 +985,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/old_driver/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="127" column="43" selection-start-line="127" selection-start-column="43" selection-end-line="127" selection-end-column="43" />
+        <state relative-caret-position="630">
+          <caret line="61" column="125" selection-start-line="61" selection-start-column="125" selection-end-line="61" selection-end-column="125" />
           <folding>
             <element signature="e#16#51#0" expanded="true" />
           </folding>

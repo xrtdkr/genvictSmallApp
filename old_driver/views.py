@@ -55,10 +55,11 @@ def wechat_login(request):
             ''' 数据库里面已经有现成的用户 '''
             # f.write('choice1'+'\n')
             user = WxUser.objects.get(wx_openid=openid)
+            group_id = user.group.group_id
             user.session = session_key_wxserver
             user.save()
             # f.close()
-            return JsonResponse({'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver})
+            return JsonResponse({'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver, 'groupId': group_id})
         except:
             # f.write('choice2'+'\n')
             # ''' 数据库中没有现成的用户 '''
