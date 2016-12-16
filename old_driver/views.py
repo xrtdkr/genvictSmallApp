@@ -198,6 +198,7 @@ def join_group(request):
             # group_id = request.POST.get('groupID', '')
             print group_id
             try:
+                print 'after try'
                 group = Group.objects.get(group_id=group_id)
 
                 print group
@@ -210,7 +211,8 @@ def join_group(request):
                 print 'join success'
                 return JsonResponse({'status': 'success'})
             except:
-                JsonResponse({'status': 'fail', 'reason': 'no group exist'})
+                print 'no group exist'
+                return JsonResponse({'status': 'fail', 'reason': 'no group exist'})
 
         except:
             return JsonResponse({'status': 'fail', 'reason': 'session reveal no user'})
