@@ -28,10 +28,10 @@ def wechat_login(request):
         # f = open("wechat_log.txt", "a+")
         # f.write("============wechat start===========\n")
         # f.write('request-body: ' + request.body + '\n')
-        # data = json.loads(request.body)
+        data = json.loads(request.body)
         # 请求session_key_user
-        # code = data['code']
-        code = request.POST.get('code', '')
+        code = data['code']
+        # code = request.POST.get('code', '')
         print '=====code==='
         print code
         # f.write('code: ' + code + '\n')
@@ -131,9 +131,9 @@ def new_group(request):
     f = open('new_group.txt', 'a+')
     f.write('========= log ==========')
     try:
-        data = json.loads(request.body)
-        f.write('data: ' + str(data) + '\n')
-        session_upload = data['session']
+        # data = json.loads(request.body)
+        # f.write('data: ' + str(data) + '\n')
+        # session_upload = data['session']
         session_upload = request.POST.get('session', '')
         f.write('session: ' + session_upload + '\n')
 
