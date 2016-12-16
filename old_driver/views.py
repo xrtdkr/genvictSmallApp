@@ -22,17 +22,18 @@ def wechat_login(request):
     流程是这样的，前端请求到了session_key和open_id，所以它把code给我们，我们也请求到了openid和session_key，所以我们就可以用
     微信所持有的session_key作为用户的session状态使用。即：登录中，未登录。
     '''
+    print '=================wechat_login==============='
     try:
 
         # f = open("wechat_log.txt", "a+")
         # f.write("============wechat start===========\n")
-
         # f.write('request-body: ' + request.body + '\n')
-        data = json.loads(request.body)
+        # data = json.loads(request.body)
         # 请求session_key_user
-        code = data['code']
+        # code = data['code']
         code = request.POST.get('code', '')
-
+        print '=====code==='
+        print code
         # f.write('code: ' + code + '\n')
         # 请求session_key_wxserver
         access_token_req_dict = {
@@ -41,6 +42,8 @@ def wechat_login(request):
             'js_code': code,
             'grant_type': 'authorization_code',
         }
+
+        print 'access_token_req_dict:' + str(access_token_req_dict) + '\n'
         session_key_url = 'https://api.weixin.qq.com/sns/jscode2session?' + urlencode(access_token_req_dict)
         # f.write('session_key_url: ' + session_key_url + '\n')
         session_key_ret = urllib2.urlopen(session_key_url).read()
@@ -51,6 +54,7 @@ def wechat_login(request):
         openid = session_key_dict['openid']
         session_key_wxserver = session_key_dict['session_key']
 
+        print 'session: ' + session_key_wxserver
         # f.write('openid:' + openid + '\n')
         # f.write('session_key_wxserver:' + session_key_wxserver + '\n')
         try:
@@ -61,7 +65,8 @@ def wechat_login(request):
             user.session = session_key_wxserver
             user.save()
             # f.close()
-            return JsonResponse({'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver, 'groupId': group_id})
+            return JsonResponse(
+                {'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver, 'groupId': group_id})
         except:
             # f.write('choice2'+'\n')
             # ''' 数据库中没有现成的用户 '''
@@ -73,33 +78,31 @@ def wechat_login(request):
         # f = open("wechat_test.txt", "a+")
         # f.write('login failure')
         # f.close()
-        return HttpResponse("login failure, denglujiushishibaile")
+        return JsonResponse({'status': 'login fail, login fail'})
 
 
 def upload_init(request):
     try:
-        f = open('upload_init.txt', 'a+')
-        f.write('=====logging start=====\n')
-        data = json.loads(request.body)
-        f.write('data: ' + str(data) + '\n')
-        session = data['session']
+        print '==========upload_init==============='
+
+        # data = json.loads(request.body)
+        # session = data['session']
 
         session = request.POST.get('session', '')
-        # f.write('session1: ' + session + '\n')
-        # f.write('session in database : ')
+
         for user in WxUser.objects.all():
-            f.write(user.session)
+            print 'user.session: ' + user.session
 
         try:
             user = WxUser.objects.get(session=session)
 
-            f.write('get user \n')
+            # f.write('get user \n')
 
-            user_info = data['userInfo']
+            # user_info = data['userInfo']
             user_info = request.POST.get('userInfo', '')
 
-            f.write('user_info: ' + str(user_info) + '\n')
-            f.write('bug probably rise \n')
+            # f.write('user_info: ' + str(user_info) + '\n')
+            # f.write('bug probably rise \n')
 
             nick_name = user_info['nickName']
             gender = user_info['gender']
@@ -111,16 +114,16 @@ def upload_init(request):
             user.province = province
             user.icon_url = icon
             user.save()
-            f.write(' user init success' + '\n')
-            f.close()
+            # f.write(' user init success' + '\n')
+            # f.close()
             return JsonResponse({'status': 'success'})
         except:
-            f.write('choice1' + '\n')
-            f.close()
+            # f.write('choice1' + '\n')
+            # f.close()
             return JsonResponse({'status': 'fail'})
     except:
-        f.write('choice2' + '\n')
-        f.close()
+        # f.write('choice2' + '\n')
+        # f.close()
         return JsonResponse({'status': 'fail'})
 
 
@@ -291,6 +294,4 @@ def dismiss(request):
         return JsonResponse({'status': 'fail'})
 
 
-
-
-
+''' post 请求 '''
