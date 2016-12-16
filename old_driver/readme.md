@@ -14,7 +14,7 @@
 		code: xxx,
 	}
 		  
-	返回：{status: success/fail, sessionkey: xxx,}
+	返回：{status: success/fail, sessionkey: xxx, }
 	
 	
 ## 1.5 处理用户上传的初始数据
@@ -155,13 +155,60 @@
 	}
 	返回: {status: success/fail, session: xxxx}
 	
+	
 ## 10.图片分享
+<a href="https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-file.html#wxuploadfileobject">参考文档</a>
+
 	注意带上session
 	接口：www.ebichu.cn/newPic/
 	方式: post
-	data:{
-		session: xxx,
-		
+	(使用微信服务器的上传模块)
+	在from-data中额外添加以下字段：
+	session: xxx,
+	message: xxx,
+	latitude: xxx,
+	longitude: xxx,
+	datetime: xxx,
+	返回
+	{"status": True}
+	
+
+## 11. 相册刷新
+
+	注意带上session
+	接口: www.ebichu.cn/refreshPic/
+	
+	{
+		session:xxxx,
+		image:[
+			{
+				url:xxx(服务器中的url),
+				message:xxx,
+				datetime:xxx,
+				latitude:xxx,
+				longitude:xxx,
+			}
+			...
+			{
+				url:xxx(服务器中的url),
+				message:xxx,
+				date:xxx,
+				latitude:xxx,
+				longitude:xxx,
+			}
+		]
+	}	
+	然后根据这份json加载大体框架，然后再根据下面的进行图片请求。
+	
+## 12. 图片文件请求(请求下来请劳烦您存储到本地)
+<a href="https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-file.html#wxdownloadfileobject">参考文档</a>
+	
+## 13. 生成一个ablum
+	
+	注意带上session
+	
+	{
+		session:xxxx,
 	}
 	
 
