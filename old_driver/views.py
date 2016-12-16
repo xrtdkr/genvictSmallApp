@@ -364,11 +364,16 @@ def new_pic(request):
             file_path = request.POST['filePath']
 
             image = request.FILES['file']
+            print '====log==='
+            print content
+            print latitude
+            print longitude
+            print type(image)
             print 'image receive is not down wow!'
 
-
-            url = 'picture/' + name + '.jpg'
-
+            name = file_path.splite("://")[1]
+            url = 'picture/' + name
+            return JsonResponse({'status': 'success'})
 
         except:
             return JsonResponse({'status': 'fail,but session got'})
