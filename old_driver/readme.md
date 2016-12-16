@@ -173,13 +173,18 @@
 	{"status": True}
 	
 
-## 11. 相册刷新
+## 11. 朋友圈刷新
 
 	注意带上session
 	接口: www.ebichu.cn/refreshPic/
 	
 	{
-		session:xxxx,
+		session:xxx,
+		groupID:xxx,
+		
+	}
+	返回
+	{
 		image:[
 			{
 				url:xxx(服务器中的url),

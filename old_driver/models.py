@@ -39,15 +39,15 @@ class WxUser(models.Model):
         return self.wx_openid
 
 
-class Album(models.Model):
-    title = models.CharField(max_length=30)
-    id = models.CharField(max_length=30)
-    user = models.ForeignKey
-
-
 class Image(models.Model):
-    id = models.CharField(max_length=50)
-    url = models.CharField(max_length=100)  # 在服务器里面的位置
+    group = models.CharField(max_length=10, blank=True)  # 这张image所处的组名。重复了就去死
+    name = models.CharField(max_length=30, blank=True)  # name 是hash生成的一个名字
+    url = models.CharField(max_length=100, blank=True)  # 在服务器里面的位置+上面的名字
+    message = models.CharField(max_length=50, blank=True)  # 消息是消息
+    user = models.ForeignKey(WxUser)  # 用户
+    longitude = models.CharField(max_length=30, blank=True)
+    latitude = models.CharField(max_length=30, blank=True)
+    datetime = models.CharField(max_length=30, blank=True)  # 发送的时间
 
-
-    album = models.ForeignKey(Album)
+    def __unicode__(self):
+        return self.name

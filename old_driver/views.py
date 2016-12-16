@@ -5,11 +5,14 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST, require_GET
 from genvicSmallApp.settings import WECHAT_APPID, WECHAT_SECRET
-from old_driver.models import WxUser, Group
+from old_driver.models import WxUser, Group, Image
 from tools import *
 import urllib2
 import json
 from urllib import urlencode
+from django.db.models import Q
+from itertools import chain
+from django.db.models.query import QuerySet
 
 SUCCESS = 'success'
 blank_group = Group.objects.get(group_id='')
@@ -71,8 +74,6 @@ def wechat_login(request):
             # f.write('choice2'+'\n')
             # ''' 数据库中没有现成的用户 '''
             user = WxUser.objects.create(wx_openid=openid, session=session_key_wxserver, group=blank_group)
-            # f.close()
-            user.save()
             return JsonResponse({'status': 'login success,创建了一个新的用户', 'sessionKey': session_key_wxserver})
     except:
         # f = open("wechat_test.txt", "a+")
@@ -182,8 +183,9 @@ def join_group(request):
         try:
             ''' 处理没有对应的session的错误 '''
             user = WxUser.objects.get(session=session_upload)
-
+            print user
             if user.group.group_id:
+                print '已经加入了其他小队'
                 return JsonResponse({'status': 'fail', 'reason': '已经加入了其他小队'})
 
             longitude = data['longitude']
@@ -193,8 +195,10 @@ def join_group(request):
             # longitude = request.POST.get('longitude', '')
             # latitude = request.POST.get('latitude', '')
             # group_id = request.POST.get('groupID', '')
-
+            print group_id
             group = Group.objects.get(group_id=group_id)
+
+            print group
             user.longitude = longitude
             user.latitude = latitude
             user.isLeader = False
@@ -296,3 +300,35 @@ def dismiss(request):
 
 
 ''' post 请求 '''
+
+
+def refresh_pic(request):
+    try:
+        data = json.loads(request.body)
+        session_upload = data['session']
+
+        try:
+            user = WxUser.objects.get(session=session_upload)
+            group_id = user.group.group_id
+            group = Group.objects.get(group_id=group_id)
+            user_set = group.wxuser_set.all()
+
+            tmp_list = QuerySet()
+            for user in user_set.all():
+                set_image = user.image_set.filter(group=group_id)
+                tmp_list = chain(tmp_list, set_image)
+            tmp_list.all().order_by("-datetime")
+
+            ret_list = []
+            for image in tmp_list.all():
+                ret_dict = {}
+                ret_dict['nickname'] = image.user.wx_nickname
+                ret_dict['avator'] = image.url
+                ret_dict['content'] = image.message
+                ret_dict['image']
+
+
+        except:
+            return JsonResponse({'status': 'fail,but session got'})
+    except:
+        return JsonResponse({'status': 'fail, session did not get'})
