@@ -165,10 +165,11 @@
 	(使用微信服务器的上传模块)
 	在from-data中额外添加以下字段：
 	session: xxx,
-	message: xxx,
+	content: xxx,
 	latitude: xxx,
 	longitude: xxx,
-	datetime: xxx,
+	filePath: xxx,
+
 	返回
 	{"status": True}
 	

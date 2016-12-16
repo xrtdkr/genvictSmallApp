@@ -13,6 +13,7 @@ from urllib import urlencode
 from django.db.models import Q
 from itertools import chain
 from django.db.models.query import QuerySet
+from django.utils import datetime_safe
 
 SUCCESS = 'success'
 blank_group = Group.objects.get(group_id='')
@@ -69,7 +70,7 @@ def wechat_login(request):
             user.save()
             # f.close()
             return JsonResponse(
-                {'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver, 'groupId': group_id})
+                {'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver, 'groupID': group_id})
         except:
             # f.write('choice2'+'\n')
             # ''' 数据库中没有现成的用户 '''
@@ -207,7 +208,7 @@ def join_group(request):
                 user.latitude = latitude
                 user.isLeader = False
                 user.group = group
-                user.order_in_group = len(Group.objects.all())
+                user.order_in_group = len(group.wxuser_set.all())
                 user.save()
                 print 'join success'
                 return JsonResponse({'status': 'success'})
@@ -343,7 +344,35 @@ def refresh_pic(request):
     except:
         return JsonResponse({'status': 'fail, session did not get'})
 
+
 # 这边的请求头的content-type是multi
 
-# def new_pic(request):
-#     try:
+def new_pic(request):
+    print '==========new_pic==========='
+    print '=========================='
+    try:
+        session_upload = request['session']
+        print session_upload
+        try:
+            user = WxUser.objects.get(session=session_upload)
+            print "session: " + user.session
+
+            print "直接接受POST的方式: "
+            content = request.POST['content']
+            latitude = request.POST['latitude']
+            longitude = request.POST['longitude']
+            file_path = request.POST['filePath']
+
+            image = request.FILES['file']
+            print 'image receive is not down wow!'
+
+
+            url = 'picture/' + name + '.jpg'
+
+
+        except:
+            return JsonResponse({'status': 'fail,but session got'})
+
+    except:
+        print "receive upload session fail"
+        return JsonResponse({'status': 'fail,but did not session got'})
