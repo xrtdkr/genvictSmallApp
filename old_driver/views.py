@@ -200,7 +200,7 @@ def join_group(request):
             try:
                 print 'after try'
 
-                group = Group.objects.get(group_id=group_id)
+                group = Group.objects.get(group_id=str(group_id))
 
                 # print group:
                 user.longitude = longitude
