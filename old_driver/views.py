@@ -225,6 +225,7 @@ def refresh(request):
             longitude = data['longitude']
             latitude = data['latitude']
             state = data['state']
+            group_id = data['groupID']
 
             # longitude = request.POST.get('longitude', '')
             # latitude = request.POST.get('latitude', '')
@@ -234,8 +235,6 @@ def refresh(request):
             user.longitude = longitude
             user.latitude = latitude
             user.state = state
-
-            group_id = user.group.group_id
 
             print group_id
             try:
@@ -283,8 +282,9 @@ def dismiss(request):
             group_id = user.group.group_id
             if user.isLeader == True:
                 Group.objects.get(group_id=group_id).delete()
+                user.group = blank_group
+                user.save()
                 return JsonResponse({'status': 'success, leader dismiss'})
-
             else:
                 user.group = blank_group
                 user.save()

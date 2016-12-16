@@ -156,7 +156,7 @@
 	返回: {status: success/fail, session: xxxx}
 	
 	
-## 10.图片分享
+## 10.图片上传
 <a href="https://mp.weixin.qq.com/debug/wxadoc/dev/api/network-file.html#wxuploadfileobject">参考文档</a>
 
 	注意带上session
@@ -213,8 +213,8 @@
 	}
 	
 	
-## 旅行记
+## 14. 
 
 
-	
+图片社交：
 	

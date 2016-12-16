@@ -37,3 +37,17 @@ class WxUser(models.Model):
 
     def __unicode__(self):
         return self.wx_openid
+
+
+class Album(models.Model):
+    title = models.CharField(max_length=30)
+    id = models.CharField(max_length=30)
+    user = models.ForeignKey
+
+
+class Image(models.Model):
+    id = models.CharField(max_length=50)
+    url = models.CharField(max_length=100)  # 在服务器里面的位置
+
+
+    album = models.ForeignKey(Album)
