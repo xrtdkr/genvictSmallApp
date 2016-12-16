@@ -174,6 +174,7 @@ def new_group(request):
 
 
 def join_group(request):
+    print '=======join group start======='
     try:
         data = json.loads(request.body)
         ''' 处理没有带session的错误 '''
@@ -196,17 +197,21 @@ def join_group(request):
             # latitude = request.POST.get('latitude', '')
             # group_id = request.POST.get('groupID', '')
             print group_id
-            group = Group.objects.get(group_id=group_id)
+            try:
+                group = Group.objects.get(group_id=group_id)
 
-            print group
-            user.longitude = longitude
-            user.latitude = latitude
-            user.isLeader = False
-            user.group = group
-            user.order_in_group = len(group.objects.all())
-            user.save()
-            print 'join success'
-            return JsonResponse({'status': 'success'})
+                print group
+                user.longitude = longitude
+                user.latitude = latitude
+                user.isLeader = False
+                user.group = group
+                user.order_in_group = len(group.objects.all())
+                user.save()
+                print 'join success'
+                return JsonResponse({'status': 'success'})
+            except:
+                JsonResponse({'status': 'fail', 'reason': 'no group exist'})
+
         except:
             return JsonResponse({'status': 'fail', 'reason': 'session reveal no user'})
     except:
@@ -323,12 +328,22 @@ def refresh_pic(request):
             for image in tmp_list.all():
                 ret_dict = {}
                 ret_dict['nickname'] = image.user.wx_nickname
-                ret_dict['avator'] = image.url
+                ret_dict['avator'] = image.user.icon_url
                 ret_dict['content'] = image.message
-                ret_dict['image']
-
+                ret_dict['image'] = image.url
+                ret_dict['publishTime'] = image.datetime
+                ret_list.append(ret_dict)
+            return JsonResponse({'image': ret_list})
 
         except:
             return JsonResponse({'status': 'fail,but session got'})
     except:
         return JsonResponse({'status': 'fail, session did not get'})
+
+
+
+# 这边的请求头的content-type是multi
+
+def new_pic(request):
+    try:
+
