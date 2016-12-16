@@ -85,25 +85,25 @@ def upload_init(request):
     try:
         print '==========upload_init==============='
 
-        # data = json.loads(request.body)
-        # session = data['session']
-
-        session = request.POST.get('session', '')
+        data = json.loads(request.body)
+        session = data['session']
+        print 'session: '
+        print session
+        # session = request.POST.get('session', '')
 
         for user in WxUser.objects.all():
             print 'user.session: ' + user.session
+            print 'session up is same'
 
         try:
             user = WxUser.objects.get(session=session)
 
             # f.write('get user \n')
 
-            # user_info = data['userInfo']
-            user_info = request.POST.get('userInfo', '')
-
-            # f.write('user_info: ' + str(user_info) + '\n')
-            # f.write('bug probably rise \n')
-
+            user_info = data['userInfo']
+            # user_info = request.POST.get('userInfo', '')
+            print 'user_info: '
+            print user_info
             nick_name = user_info['nickName']
             gender = user_info['gender']
             province = user_info['province']
@@ -114,7 +114,7 @@ def upload_init(request):
             user.province = province
             user.icon_url = icon
             user.save()
-            # f.write(' user init success' + '\n')
+            print 'user init success'
             # f.close()
             return JsonResponse({'status': 'success'})
         except:
@@ -131,12 +131,12 @@ def new_group(request):
     f = open('new_group.txt', 'a+')
     f.write('========= log ==========')
     try:
-        # data = json.loads(request.body)
-        # f.write('data: ' + str(data) + '\n')
-        # session_upload = data['session']
-        session_upload = request.POST.get('session', '')
-        f.write('session: ' + session_upload + '\n')
+        data = json.loads(request.body)
+        print 'data: '
+        print data
+        session_upload = data['session']
 
+        # session_upload = request.POST.get('session', '')
         # for user in WxUser.objects.all():
         #     f.write(user.session)
 
@@ -148,16 +148,13 @@ def new_group(request):
                 return JsonResponse({'status': 'fail, user has in a group'})
             else:
                 group_id = random_num_string()
-
-                f.write('group_id: ' + group_id + '\n')
-
                 group = Group.objects.create(group_id=group_id)
 
-                # longitude = data['longitude']
-                longitude = request.POST.get('longitude', '')
-                # latitude = data['latitude']
-                latitude = request.POST.get('latitude', '')
-                # group 创建成功
+                longitude = data['longitude']
+                # longitude = request.POST.get('longitude', '')
+                latitude = data['latitude']
+                # latitude = request.POST.get('latitude', '')
+                print 'group init success'
 
                 user.longitude = longitude
                 user.latitude = latitude
@@ -166,7 +163,8 @@ def new_group(request):
                 user.order_in_group = 0
                 user.save()
                 f.write('new group success')
-                # user 更新成功
+                print 'user 更新成功'
+
                 return JsonResponse({'status': 'success', 'groupID': group_id})
         except:
             return JsonResponse({'status': 'fail'})
@@ -176,10 +174,10 @@ def new_group(request):
 
 def join_group(request):
     try:
-        # data = json.loads(request.body)
+        data = json.loads(request.body)
         ''' 处理没有带session的错误 '''
-        # session_upload = data['session']
-        session_upload = request.POST.get('session', '')
+        session_upload = data['session']
+        # session_upload = request.POST.get('session', '')
 
         try:
             ''' 处理没有对应的session的错误 '''
@@ -188,13 +186,13 @@ def join_group(request):
             if user.group.group_id:
                 return JsonResponse({'status': 'fail', 'reason': '已经加入了其他小队'})
 
-            # longitude = data['longitude']
-            # latitude = data['latitude']
-            # group_id = data['groupID']
+            longitude = data['longitude']
+            latitude = data['latitude']
+            group_id = data['groupID']
 
-            longitude = request.POST.get('longitude', '')
-            latitude = request.POST.get('latitude', '')
-            group_id = request.POST.get('groupID', '')
+            # longitude = request.POST.get('longitude', '')
+            # latitude = request.POST.get('latitude', '')
+            # group_id = request.POST.get('groupID', '')
 
             group = Group.objects.get(group_id=group_id)
             user.longitude = longitude
@@ -203,7 +201,7 @@ def join_group(request):
             user.group = group
             user.order_in_group = len(group.objects.all())
             user.save()
-
+            print 'join success'
             return JsonResponse({'status': 'success'})
         except:
             return JsonResponse({'status': 'fail', 'reason': 'session reveal no user'})
@@ -217,19 +215,20 @@ def refresh(request):
     try:
         data = json.loads(request.body)
         session_upload = data['session']
-        session_upload = request.POST.get('session', '')
+
+        # session_upload = request.POST.get('session', '')
         try:
             user = WxUser.objects.get(session=session_upload)
 
             # 已经查找到了已有用户
 
-            # longitude = data['longitude']
-            # latitude = data['latitude']
-            # state = data['state']
+            longitude = data['longitude']
+            latitude = data['latitude']
+            state = data['state']
 
-            longitude = request.POST.get('longitude', '')
-            latitude = request.POST.get('latitude', '')
-            state = request.POST.get('state', '')
+            # longitude = request.POST.get('longitude', '')
+            # latitude = request.POST.get('latitude', '')
+            # state = request.POST.get('state', '')
 
             # save the attr
             user.longitude = longitude
@@ -237,7 +236,8 @@ def refresh(request):
             user.state = state
 
             group_id = user.group.group_id
-            f.write('group id: ' + group_id + '\n')
+
+            print group_id
             try:
                 # 找到了用户ID
                 f.write('find user id \n')
@@ -246,7 +246,7 @@ def refresh(request):
                 ret_data = {}
                 ret_data['isDismiss'] = False
                 ret_data['user'] = []
-                f.write('before for')
+                print 'in loop'
                 for user in group.wxuser_set.all():
                     user_dict = {}
                     user_dict['nickname'] = user.wx_nickname
@@ -257,12 +257,13 @@ def refresh(request):
                     user_dict['longitude'] = user.longitude
                     user_dict['latitude'] = user.latitude
                     ret_data['user'].append(user_dict)
-                    f.write('user_dict: ' + str(user_dict) + '\n')
-                f.write('ret_data: ' + str(ret_data) + '\n')
-                f.close()
+                    print '======ret_data====='
+                    print user_dict
+
+                print '====ret_data===='
+                print ret_data
                 return JsonResponse(ret_data)
             except:
-                f.close()
                 return JsonResponse({'isDismiss': True, 'user': []})
 
         except:
@@ -275,8 +276,8 @@ def refresh(request):
 def dismiss(request):
     try:
         data = json.loads(request.body)
-        # session_upload = data['session']
-        session_upload = request.POST.get('session', '')
+        session_upload = data['session']
+        # session_upload = request.POST.get('session', '')
         try:
             user = WxUser.objects.get(session=session_upload)
             group_id = user.group.group_id
