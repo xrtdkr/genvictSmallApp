@@ -207,7 +207,7 @@ def join_group(request):
                 user.latitude = latitude
                 user.isLeader = False
                 user.group = group
-                user.order_in_group = len(group.objects.all())
+                user.order_in_group = len(Group.objects.all())
                 user.save()
                 print 'join success'
                 return JsonResponse({'status': 'success'})
