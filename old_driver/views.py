@@ -344,6 +344,6 @@ def refresh_pic(request):
 
 # 这边的请求头的content-type是multi
 
-def new_pic(request):
-    try:
+# def new_pic(request):
+#     try:
 
