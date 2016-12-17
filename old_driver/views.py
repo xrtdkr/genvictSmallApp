@@ -357,16 +357,27 @@ def new_pic(request):
             user = WxUser.objects.get(session=session_upload)
             print "session: " + user.session
 
-            print "直接接受POST的方式: "
+            print "direct  "
             content = request.POST['content']
+            print 'content: '
+            print content
             latitude = request.POST['latitude']
+            print "latitude: "
+            print latitude
             longitude = request.POST['longitude']
+            print 'longitude: '
+            print longitude
             file_path = request.POST['filePath']
 
+            print 'file_path: '
+            print file_path
             image = request.FILES['file']
-
+            print 'image: '
+            print 'image get'
             group_id = user.group.group_id
 
+            print 'group_id: '
+            print group_id
             print '====log==='
             print content
             print latitude
@@ -379,7 +390,12 @@ def new_pic(request):
 
             Image.objects.create(group=group_id, name=name, url=url, message=content, user=user, longitude=longitude,
                                  latitude=latitude, datetime=datetime_safe.datetime.now())
+
+            print 'the picture ready to write: '
             image.write(url, 'w')
+            print 'the image has been writen'
+
+            print 'success'
             return JsonResponse({'status': 'success'})
         except:
             return JsonResponse({'status': 'fail,but session got'})
