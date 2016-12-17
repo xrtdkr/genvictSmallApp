@@ -389,10 +389,15 @@ def new_pic(request):
             print 'image receive is not down wow!'
 
             name = file_path.splite("://")[1]
-            url = 'picture/' + name
+            print name
 
+            url = 'picture/' + name
+            print url
+
+            print '=============='
             Image.objects.create(group=group_id, name=name, url=url, message=content, user=user, longitude=longitude,
                                  latitude=latitude, datetime=datetime_safe.datetime.now())
+            print '=============='
 
             print 'the picture ready to write: '
             image.write(url, 'w')
@@ -401,6 +406,7 @@ def new_pic(request):
             print 'success'
             return JsonResponse({'status': 'success'})
         except:
+            print 'session got but fail'
             return JsonResponse({'status': 'fail,but session got'})
     except:
         print "receive upload session fail"
