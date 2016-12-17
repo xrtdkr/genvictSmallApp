@@ -4,7 +4,6 @@
     <list default="true" id="7e009dea-fabf-4b73-bde9-fc5015ea29f4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/genvicSmallApp/urls.py" afterPath="$PROJECT_DIR$/genvicSmallApp/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/old_driver/models.py" afterPath="$PROJECT_DIR$/old_driver/models.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/old_driver/views.py" afterPath="$PROJECT_DIR$/old_driver/views.py" />
     </list>
     <ignored path="genvicSmallApp.iws" />
@@ -33,14 +32,14 @@
     <favorites_list name="genvicSmallApp" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.47123623">
+    <splitter split-orientation="horizontal" split-proportion="0.33108935">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
+          <file leaf-file-name="urls.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/genvicSmallApp/urls.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="360">
-                  <caret line="24" column="53" selection-start-line="24" selection-start-column="53" selection-end-line="24" selection-end-column="53" />
+                <state relative-caret-position="330">
+                  <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
                   <folding>
                     <element signature="e#623#664#0" expanded="true" />
                   </folding>
@@ -48,11 +47,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+          <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/old_driver/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="642">
-                  <caret line="379" column="58" selection-start-line="379" selection-start-column="58" selection-end-line="379" selection-end-column="58" />
+                <state relative-caret-position="192">
+                  <caret line="352" column="8" selection-start-line="352" selection-start-column="8" selection-end-line="352" selection-end-column="8" />
                   <folding>
                     <element signature="e#16#51#0" expanded="true" />
                   </folding>
@@ -73,23 +72,15 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/old_driver/models.py">
+        <leaf>
+          <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/old_driver/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="645">
-                  <caret line="43" column="41" selection-start-line="43" selection-start-column="41" selection-end-line="43" selection-end-column="41" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="wsgi.py" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/genvicSmallApp/wsgi.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="210">
-                  <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-                  <folding />
+                <state relative-caret-position="219">
+                  <caret line="353" column="43" selection-start-line="353" selection-start-column="43" selection-end-line="353" selection-end-column="43" />
+                  <folding>
+                    <element signature="e#16#51#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -124,9 +115,9 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/old_driver/tools.py" />
         <option value="$PROJECT_DIR$/old_driver/tests.py" />
-        <option value="$PROJECT_DIR$/genvicSmallApp/urls.py" />
-        <option value="$PROJECT_DIR$/old_driver/views.py" />
         <option value="$PROJECT_DIR$/old_driver/models.py" />
+        <option value="$PROJECT_DIR$/old_driver/views.py" />
+        <option value="$PROJECT_DIR$/genvicSmallApp/urls.py" />
       </list>
     </option>
   </component>
@@ -916,14 +907,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/genvicSmallApp/wsgi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/old_driver/tools.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -958,10 +941,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/old_driver/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="645">
+          <caret line="43" column="41" selection-start-line="43" selection-start-column="41" selection-end-line="43" selection-end-column="41" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/genvicSmallApp/wsgi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/genvicSmallApp/urls.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="53" selection-start-line="24" selection-start-column="53" selection-end-line="24" selection-end-column="53" />
+        <state relative-caret-position="330">
+          <caret line="22" column="46" selection-start-line="22" selection-start-column="46" selection-end-line="22" selection-end-column="46" />
           <folding>
             <element signature="e#623#664#0" expanded="true" />
           </folding>
@@ -970,19 +969,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/old_driver/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="642">
-          <caret line="379" column="58" selection-start-line="379" selection-start-column="58" selection-end-line="379" selection-end-column="58" />
+        <state relative-caret-position="219">
+          <caret line="353" column="43" selection-start-line="353" selection-start-column="43" selection-end-line="353" selection-end-column="43" />
           <folding>
             <element signature="e#16#51#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/old_driver/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="43" column="41" selection-start-line="43" selection-start-column="41" selection-end-line="43" selection-end-column="41" />
-          <folding />
         </state>
       </provider>
     </entry>

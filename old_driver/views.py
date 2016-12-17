@@ -348,9 +348,9 @@ def refresh_pic(request):
 # 这边的请求头的content-type是multi
 
 def new_pic(request):
-    print '==========new_pic==========='
-    print '=========================='
     try:
+        print '==========new_pic==========='
+        print '=========================='
         session_upload = request['session']
         print session_upload
         try:
@@ -377,17 +377,12 @@ def new_pic(request):
             name = file_path.splite("://")[1]
             url = 'picture/' + name
 
-            Image.objects.create(group=group_id, name=name)
-
-
+            Image.objects.create(group=group_id, name=name, url=url, message=content, user=user, longitude=longitude,
+                                 latitude=latitude, datetime=datetime_safe.datetime.now())
             image.write(url, 'w')
-
-
             return JsonResponse({'status': 'success'})
-
         except:
             return JsonResponse({'status': 'fail,but session got'})
-
     except:
         print "receive upload session fail"
         return JsonResponse({'status': 'fail,but did not session got'})
