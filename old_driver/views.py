@@ -402,7 +402,8 @@ def new_pic(request):
 
             print 'the picture ready to write: '
             f = open(file_url, 'wb')
-            f.write(image)
+            for chunk in f.chunks():
+                f.write(chunk)
             f.close()
             print 'the image has been writen'
 
