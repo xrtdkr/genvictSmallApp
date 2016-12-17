@@ -364,6 +364,9 @@ def new_pic(request):
             file_path = request.POST['filePath']
 
             image = request.FILES['file']
+
+            group_id = user.group.group_id
+
             print '====log==='
             print content
             print latitude
@@ -373,6 +376,13 @@ def new_pic(request):
 
             name = file_path.splite("://")[1]
             url = 'picture/' + name
+
+            Image.objects.create(group=group_id, name=name)
+
+
+            image.write(url, 'w')
+
+
             return JsonResponse({'status': 'success'})
 
         except:

@@ -41,7 +41,7 @@ class WxUser(models.Model):
 
 class Image(models.Model):
     group = models.CharField(max_length=10, blank=True)  # 这张image所处的组名。重复了就去死
-    name = models.CharField(max_length=30, blank=True)  # name 是hash生成的一个名字
+    name = models.CharField(max_length=80, blank=True)  # name 是hash生成的一个名字
     url = models.CharField(max_length=100, blank=True)  # 在服务器里面的位置+上面的名字
     message = models.CharField(max_length=50, blank=True)  # 消息是消息
     user = models.ForeignKey(WxUser)  # 用户
