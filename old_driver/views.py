@@ -390,8 +390,8 @@ def new_pic(request):
 
             name = file_path.split("://")[1]
             print name
-
-            url = 'picture/' + name
+            file_url = 'picture/' + name
+            url = 'https://ebichu.cn/picture/' + name
             print url
 
             print '=============='
@@ -400,7 +400,9 @@ def new_pic(request):
             print '=============='
 
             print 'the picture ready to write: '
-            image.write(url, 'w')
+            f = open(file_url, 'w+')
+            f.write(image)
+            f.close()
             print 'the image has been writen'
 
             print 'success'
