@@ -356,11 +356,14 @@ def new_pic(request):
         try:
             user = WxUser.objects.get(session=session_upload)
             print "session: " + user.session
-
+            print " request.POST:  "
+            print request.POST
             print "direct  "
             content = request.POST['content']
             print 'content: '
             print content
+
+            # ==== = == = = == = beng = = ==
             latitude = request.POST['latitude']
             print "latitude: "
             print latitude
