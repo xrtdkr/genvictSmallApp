@@ -351,7 +351,7 @@ def new_pic(request):
     try:
         print '==========new_pic==========='
         print '=========================='
-        session_upload = request['session']
+        session_upload = request.POST['session']
         print session_upload
         try:
             user = WxUser.objects.get(session=session_upload)
