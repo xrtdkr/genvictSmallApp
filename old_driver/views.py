@@ -388,7 +388,7 @@ def new_pic(request):
             print type(image)
             print 'image receive is not down wow!'
 
-            name = file_path.splite("://")[1]
+            name = file_path.split("://")[1]
             print name
 
             url = 'picture/' + name
