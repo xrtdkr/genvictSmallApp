@@ -188,17 +188,20 @@
 	{
 		image:[
 			{
-				url:xxx(服务器中的url),
-				message:xxx,
+				url:xxx, (大图片服务器中图的url),
+				icon_url: xxx, 图片所有者的icon_url,
+				nickname: xxx,
+				content: xxx, 一段文字
 				datetime:xxx,
 				latitude:xxx,
 				longitude:xxx,
 			}
 			...
-			{
-				url:xxx(服务器中的url),
-				message:xxx,
-				date:xxx,
+				url:xxx, (大图片服务器中图的url),
+				icon_url: xxx, 图片所有者的icon_url,
+				wx_nickname: xxx,
+				content: xxx, 一段文字
+				datetime:xxx,
 				latitude:xxx,
 				longitude:xxx,
 			}

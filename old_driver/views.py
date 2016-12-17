@@ -318,30 +318,48 @@ def refresh_pic(request):
 
         try:
             user = WxUser.objects.get(session=session_upload)
+            print 'user'
+            print user
             group_id = user.group.group_id
+            print group_id
             group = Group.objects.get(group_id=group_id)
+            print
             user_set = group.wxuser_set.all()
+            print user_set
 
-            tmp_list = QuerySet()
+            tmp_list = user.image_set.filter(group='888888')
+            print 'yi ge kong de dong xi'
+            print tmp_list
+
+            print ' ji jiang jin ru xun huan'
             for user in user_set.all():
                 set_image = user.image_set.filter(group=group_id)
-                tmp_list = chain(tmp_list, set_image)
+                tmp_list = tmp_list | set_image
             tmp_list.all().order_by("-datetime")
 
+            print 'print tmp_list, yong datetime lai zuo dong xi'
             ret_list = []
             for image in tmp_list.all():
                 ret_dict = {}
+
                 ret_dict['nickname'] = image.user.wx_nickname
                 ret_dict['avator'] = image.user.icon_url
                 ret_dict['content'] = image.message
                 ret_dict['image'] = image.url
                 ret_dict['publishTime'] = image.datetime
+                ret_dict['latitude'] = image.latitude
+                ret_dict['longitude'] = image.longitude
+
                 ret_list.append(ret_dict)
+            print 'ret_list: de yangshi yinggai yaohe jiekou wendang xiangtong:'
+            print ret_list
             return JsonResponse({'image': ret_list})
 
         except:
+            print 'beng2'
             return JsonResponse({'status': 'fail,but session got'})
     except:
+        print 'beng1'
         return JsonResponse({'status': 'fail, session did not get'})
 
 
@@ -362,7 +380,6 @@ def new_pic(request):
             content = request.POST['content']
             print 'content: '
             print content
-
             # ==== = == = = == = beng = = ==
             latitude = request.POST['latitude']
             print "latitude: "
@@ -397,7 +414,7 @@ def new_pic(request):
 
             print '=============='
             Image.objects.create(group=group_id, name=name, url=url, message=content, user=user, longitude=longitude,
-                                 latitude=latitude, datetime=datetime_safe.datetime.now())
+                                 latitude=latitude, datetime=datetime_safe.datetime.now().strftime(("%Y-%m-%d %H:%M")))
             print '=============='
 
             print 'the picture ready to write: '
