@@ -264,7 +264,7 @@ def refresh(request):
 
             longitude = data['longitude']
             latitude = data['latitude']
-            state = data['state']
+            # state = data['state']
             group_id = data['groupID']
 
             # longitude = request.POST.get('longitude', '')
@@ -274,8 +274,8 @@ def refresh(request):
             # save the attr
             user.longitude = longitude
             user.latitude = latitude
-            user.state = state
-
+            # user.state = state
+            user.save()
             print group_id
             try:
                 # 找到了用户ID
