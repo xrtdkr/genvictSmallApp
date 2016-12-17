@@ -129,6 +129,33 @@ def upload_init(request):
         return JsonResponse({'status': 'fail'})
 
 
+def change_state(request):
+    try:
+        data = json.loads(request.body)
+
+        print 'data: '
+        print data
+
+        session_upload = data['session']
+
+        try:
+            user = WxUser.objects.get(session=session_upload)
+            print user.wx_nickname
+
+            state = data['state']
+            user.state = state
+            user.save()
+            print 'save success...'
+
+            return JsonResponse({'status': 'success'})
+
+        except:
+            return JsonResponse({'status': 'fail, aaaaa'})
+
+    except:
+        return JsonResponse({'status': 'fail,bbbbbb'})
+
+
 def new_group(request):
     f = open('new_group.txt', 'a+')
     f.write('========= log ==========')
