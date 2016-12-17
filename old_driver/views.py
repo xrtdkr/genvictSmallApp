@@ -376,6 +376,7 @@ def new_pic(request):
             print file_path
             image = request.FILES['file']
             print 'image: '
+            print image
             print 'image get'
             group_id = user.group.group_id
 
@@ -400,7 +401,7 @@ def new_pic(request):
             print '=============='
 
             print 'the picture ready to write: '
-            f = open(file_url, 'w+')
+            f = open(file_url, 'wb')
             f.write(image)
             f.close()
             print 'the image has been writen'
