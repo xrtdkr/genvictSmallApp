@@ -172,9 +172,9 @@ def new_group(request):
         try:
             user = WxUser.objects.get(session=session_upload)
             f.write('user get \n')
-
-            if user.group.group_id:
-                return JsonResponse({'status': 'fail, user has in a group'})
+            group_id = user.group.group_id
+            if group_id:
+                return JsonResponse({'status': 'fail, user has in a group', 'groupID': group_id})
             else:
                 group_id = random_num_string()
                 group = Group.objects.create(group_id=group_id)

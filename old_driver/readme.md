@@ -56,10 +56,6 @@
 	方式：post
 	data:{
 	
-		***这里删除****
-		groupID: xxxxx(五位整数),
-		**************
-		
 		***这里添加****
 		longitude: xxxx,
 		latitude: xxxxx,
