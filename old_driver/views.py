@@ -216,32 +216,32 @@ def join_group(request):
             if user.group.group_id:
                 print '已经加入了其他小队'
                 return JsonResponse({'status': 'fail', 'reason': '已经加入了其他小队'})
+            else:
+                longitude = data['longitude']
+                latitude = data['latitude']
+                group_id = data['groupID']
 
-            longitude = data['longitude']
-            latitude = data['latitude']
-            group_id = data['groupID']
+                # longitude = request.POST.get('longitude', '')
+                # latitude = request.POST.get('latitude', '')
+                # group_id = request.POST.get('groupID', '')
+                print group_id
+                try:
+                    print 'after try'
 
-            # longitude = request.POST.get('longitude', '')
-            # latitude = request.POST.get('latitude', '')
-            # group_id = request.POST.get('groupID', '')
-            print group_id
-            try:
-                print 'after try'
+                    group = Group.objects.get(group_id=str(group_id))
 
-                group = Group.objects.get(group_id=str(group_id))
-
-                # print group:
-                user.longitude = longitude
-                user.latitude = latitude
-                user.isLeader = False
-                user.group = group
-                user.order_in_group = len(group.wxuser_set.all())
-                user.save()
-                print 'join success'
-                return JsonResponse({'status': 'success'})
-            except:
-                print 'no group exist'
-                return JsonResponse({'status': 'fail', 'reason': 'no group exist'})
+                    # print group:
+                    user.longitude = longitude
+                    user.latitude = latitude
+                    user.isLeader = False
+                    user.group = group
+                    user.order_in_group = len(group.wxuser_set.all())
+                    user.save()
+                    print 'join success'
+                    return JsonResponse({'status': 'success'})
+                except:
+                    print 'no group exist'
+                    return JsonResponse({'status': 'fail', 'reason': 'no group exist'})
 
         except:
             return JsonResponse({'status': 'fail', 'reason': 'session reveal no user'})
