@@ -487,7 +487,7 @@ def create_album(request):
 
                 album_name = data['albumName']
                 print album_name
-                album_id = hashlib.sha1(datetime_safe.datetime.now()).hexdigest()
+                album_id = hashlib.sha1(str(datetime_safe.datetime.now())).hexdigest()
                 print album_id
                 album = Album.objects.create(name=album_name, album_id=album_id, user=user)
                 print album
