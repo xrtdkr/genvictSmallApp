@@ -18,7 +18,6 @@ from django.utils import datetime_safe
 SUCCESS = 'success'
 blank_group = Group.objects.get(group_id='')
 
-
 # Create your views here.
 
 def wechat_login(request):
@@ -163,7 +162,7 @@ def new_group(request):
         print data
         session_upload = data['session']
 
-        # session_upload = request.POST.get('session', '')
+       # session_upload = request.POST.get('session', '')
         # for user in WxUser.objects.all():
         #     f.write(user.session)
 
