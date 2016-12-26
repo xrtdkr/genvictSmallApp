@@ -9,7 +9,7 @@ from old_driver.models import WxUser, Group, Image, Album
 from tools import *
 import urllib2
 import json
-from urllib import urlencode
+from urllib import urlencode, unquote
 from django.db.models import Q
 from itertools import chain
 from django.db.models.query import QuerySet
@@ -403,7 +403,7 @@ def new_pic(request):
             print " request.POST:  "
             print request.POST
             print "direct  "
-            content = request.POST['content']
+            content = unquote(request.POST['content'])
             print 'content: '
             print content
             # ==== = == = = == = beng = = ==
