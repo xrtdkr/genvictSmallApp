@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST, require_GET
 from genvicSmallApp.settings import WECHAT_APPID, WECHAT_SECRET
-from old_driver.models import WxUser, Group, Image
+from old_driver.models import WxUser, Group, Image, Album
 from tools import *
 import urllib2
 import json
@@ -157,8 +157,6 @@ def change_state(request):
 
 
 def new_group(request):
-    f = open('new_group.txt', 'a+')
-    f.write('========= log ==========')
     try:
         data = json.loads(request.body)
         print 'data: '
@@ -171,9 +169,11 @@ def new_group(request):
 
         try:
             user = WxUser.objects.get(session=session_upload)
-            f.write('user get \n')
             group_id = user.group.group_id
+            print 'group id is: '
+            print group_id
             if group_id:
+                print 'group id is blank'
                 return JsonResponse({'status': 'fail, user has in a group', 'groupID': group_id})
             else:
                 group_id = random_num_string()
@@ -191,9 +191,8 @@ def new_group(request):
                 user.isLeader = True
                 user.order_in_group = 0
                 user.save()
-                f.write('new group success')
-                print 'user 更新成功'
 
+                print 'user chuang jian cheng gong'
                 return JsonResponse({'status': 'success', 'groupID': group_id})
         except:
             return JsonResponse({'status': 'fail'})
@@ -395,7 +394,6 @@ def refresh_pic(request):
 def new_pic(request):
     try:
         print '==========new_pic==========='
-        print '=========================='
         session_upload = request.POST['session']
         print session_upload
         try:
@@ -458,4 +456,122 @@ def new_pic(request):
             return JsonResponse({'status': 'fail,but session got'})
     except:
         print "receive upload session fail"
+        return JsonResponse({'status': 'fail,but did not session got'})
+
+
+def create_album(request):
+    '''
+    request:
+        session, albumName
+    return:
+        status
+    '''
+    print '======create_album======='
+    try:
+        data = json.loads(request.body)
+        session_upload = data['session']
+        try:
+            user = WxUser.objects.get(session=session_upload)
+            group_id = user.group.group_id
+            if not group_id:
+                print 'group id is blank'
+                return JsonResponse({'status': 'fail, group id is blank'})
+            else:
+                print 'start to build album'
+
+                album_name = data['albumName']
+                album_id = hashlib.sha1(album_name).hexdigest()
+                album = Album.objects.create(name=album_name, album_id=album_id, user=user)
+                images = Image.objects.filter(group=group_id)
+                for image in images:
+                    image.album = album
+                    image.save()
+                return JsonResponse({'status': 'success'})
+        except:
+            print 'no user get'
+            return JsonResponse({'status': 'fail, no user get'})
+    except:
+        print 'no session get'
+        return JsonResponse({'status': 'fail, no session get'})
+
+
+def album_set(request):
+    '''
+    这个函数是用来查看相册集合的，一个单独的页面去显示相册的页面
+    :param request: session
+    :return: {
+                "status":"success",
+                "album":[
+                    {
+                        name: xxx,
+                        id:   xxx,
+                     }
+                     ...
+                     {
+                        name: xxx,
+                        id:   xxx,
+                     }
+            }
+    '''
+
+    try:
+        data = json.loads(request.body)
+        try:
+            session_upload = data['session']
+
+            user = WxUser.objects.get(session=session_upload)
+            album_list = []
+            for album in user.album_set.all():
+                ele = {}
+                ele['name'] = album.name
+                ele['id'] = album.album_id
+                album_list.append(ele)
+            return JsonResponse({'status': 'success', 'album': album_list})
+        except:
+            print 'session got no user'
+            return JsonResponse({'status': 'session got, with no user'})
+    except:
+        print 'no session got'
+        return JsonResponse({'status': 'fail,but did not session got'})
+
+
+def album_view(request):
+    '''
+    request: {session: xxx, albumID: xxx}
+    return:{
+            status:success
+            image:{
+                    message: xxx,
+                    url : xxx,
+                    longitude: xxx,
+                    latitude: xxx,
+                }
+            }
+
+    '''
+    try:
+        data = json.loads(request.body)
+        try:
+            session_upload = data['session']
+            user = WxUser.objects.get(session=session_upload)
+
+            album_id = data['albumID']
+            album = Album.objects.get(album_id=album_id)
+
+            image_list = []
+            for image in album.image_set.all():
+
+                _dict = {}
+                _dict['message'] = image.message
+                _dict['url'] = image.url
+                _dict['longitude'] = image.longitude
+                _dict['latitude'] = image.latitude
+                image_list.append(_dict)
+
+            return JsonResponse({'status': 'success', 'image': image_list})
+        except:
+            print 'no user reveal'
+            return JsonResponse({'status': 'fail, no user reveal'})
+    except:
+        print 'no session got'
         return JsonResponse({'status': 'fail,but did not session got'})

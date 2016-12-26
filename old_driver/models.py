@@ -39,6 +39,15 @@ class WxUser(models.Model):
         return self.wx_openid
 
 
+class Album(models.Model):
+    name = models.CharField(max_length=20, blank=True)
+    album_id = models.CharField(max_length=50)
+    user = models.ForeignKey(WxUser, null=True)  # 拥有这个相册的主人是谁
+
+    def __unicode__(self):
+        return self.name
+
+
 class Image(models.Model):
     group = models.CharField(max_length=10, blank=True)  # 这张image所处的组名。重复了就去死
     name = models.CharField(max_length=80, blank=True)  # name 是hash生成的一个名字
@@ -48,6 +57,7 @@ class Image(models.Model):
     longitude = models.CharField(max_length=30, blank=True)
     latitude = models.CharField(max_length=30, blank=True)
     datetime = models.CharField(max_length=30, blank=True)  # 发送的时间
+    album = models.ForeignKey(Album, null=True)
 
     def __unicode__(self):
         return self.name
