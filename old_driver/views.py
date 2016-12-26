@@ -18,6 +18,7 @@ from django.utils import datetime_safe
 SUCCESS = 'success'
 blank_group = Group.objects.get(group_id='')
 
+
 # Create your views here.
 
 def wechat_login(request):
@@ -162,7 +163,7 @@ def new_group(request):
         print data
         session_upload = data['session']
 
-       # session_upload = request.POST.get('session', '')
+        # session_upload = request.POST.get('session', '')
         # for user in WxUser.objects.all():
         #     f.write(user.session)
 
@@ -348,7 +349,7 @@ def refresh_pic(request):
             group_id = user.group.group_id
             print group_id
             group = Group.objects.get(group_id=group_id)
-            print
+            print group
             user_set = group.wxuser_set.all()
             print user_set
 
@@ -361,6 +362,7 @@ def refresh_pic(request):
                 set_image = user.image_set.filter(group=group_id)
                 tmp_list = tmp_list | set_image
             tmp_list.all().order_by("datetime")
+            print user_set.all()
 
             print 'print tmp_list, yong datetime lai zuo dong xi'
             ret_list = []
@@ -504,6 +506,8 @@ def album_set(request):
                     {
                         name: xxx,
                         id:   xxx,
+                        image: xxx,
+                        time: xxx,
                      }
                      ...
                      {
@@ -521,11 +525,20 @@ def album_set(request):
             user = WxUser.objects.get(session=session_upload)
             album_list = []
             for album in user.album_set.all():
-                ele = {}
-                ele['name'] = album.name
-                ele['id'] = album.album_id
-                album_list.append(ele)
-            return JsonResponse({'status': 'success', 'album': album_list})
+                try:
+                    image = album.image_set.all()[0]
+                    ele = {}
+                    ele['name'] = album.name
+                    ele['id'] = album.album_id
+                    ele['image'] = image.url
+                    ele['time'] = image.datetime
+                    album_list.append(ele)
+                except:
+                    pass
+            if not album_list:
+                return JsonResponse({'status': 'fail'})
+            else:
+                return JsonResponse({'status': 'success', 'album': album_list})
         except:
             print 'session got no user'
             return JsonResponse({'status': 'session got, with no user'})
@@ -539,12 +552,19 @@ def album_view(request):
     request: {session: xxx, albumID: xxx}
     return:{
             status:success
-            image:{
+            image:[{
                     message: xxx,
                     url : xxx,
                     longitude: xxx,
                     latitude: xxx,
                 }
+                ...
+                {
+                    message: xxx,
+                    url : xxx,
+                    longitude: xxx,
+                    latitude: xxx,
+                }]
             }
 
     '''
@@ -559,7 +579,6 @@ def album_view(request):
 
             image_list = []
             for image in album.image_set.all():
-
                 _dict = {}
                 _dict['message'] = image.message
                 _dict['url'] = image.url
