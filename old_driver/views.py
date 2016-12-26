@@ -69,8 +69,7 @@ def wechat_login(request):
             user.session = session_key_wxserver
             user.save()
             # f.close()
-            return JsonResponse(
-                {'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver, 'groupID': group_id})
+            return JsonResponse({'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver, 'groupID': group_id})
         except:
             # f.write('choice2'+'\n')
             # ''' 数据库中没有现成的用户 '''
