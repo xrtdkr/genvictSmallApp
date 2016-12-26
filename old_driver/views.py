@@ -175,7 +175,7 @@ def new_group(request):
             print 'group id is: '
             print group_id
             if group_id:
-                print 'group id is blank'
+                print 'group id is not blank'
                 return JsonResponse({'status': 'fail, user has in a group', 'groupID': group_id})
             else:
                 group_id = random_num_string()
