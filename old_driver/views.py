@@ -360,7 +360,7 @@ def refresh_pic(request):
             for user in user_set.all():
                 set_image = user.image_set.filter(group=group_id)
                 tmp_list = tmp_list | set_image
-            tmp_list.all().order_by("-datetime")
+            tmp_list.all().order_by("datetime")
 
             print 'print tmp_list, yong datetime lai zuo dong xi'
             ret_list = []
