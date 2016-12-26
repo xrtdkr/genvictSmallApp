@@ -28,6 +28,10 @@ urlpatterns = [
     url(r'^joinGroup/', 'old_driver.views.join_group'),
     url(r'^refresh/', 'old_driver.views.refresh'),
     url(r'^dismiss/', 'old_driver.views.dismiss'),
-    url(r'^changeState/', 'old_driver.views.change_state',)
+    url(r'^changeState/', 'old_driver.views.change_state'),
+    url(r'^refreshPic/', 'old_driver.views.change_state'),
+    url(r'^albumView/', 'old_driver.views.album_view'),
+    url(r'^albumSet/', 'old_driver.views.album_set'),
+
 ]
 
