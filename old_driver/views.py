@@ -254,16 +254,17 @@ def join_group(request):
 
 
 def refresh(request):
-    f = open('refresh.txt', 'a+')
-    f.write('===========log=======\n')
+    print '=======refresh========='
     try:
         data = json.loads(request.body)
+        print data
         session_upload = data['session']
+        print session_upload
 
         # session_upload = request.POST.get('session', '')
         try:
             user = WxUser.objects.get(session=session_upload)
-
+            print user
             # 已经查找到了已有用户
 
             longitude = data['longitude']
@@ -281,9 +282,9 @@ def refresh(request):
             # user.state = state
             user.save()
             print group_id
+            print 'user information update complete'
             try:
                 # 找到了用户ID
-                f.write('find user id \n')
                 group = Group.objects.get(group_id=group_id)
 
                 ret_data = {}
