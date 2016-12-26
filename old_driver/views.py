@@ -521,6 +521,8 @@ def album_set(request):
                      {
                         name: xxx,
                         id:   xxx,
+                        image: xxx,
+                        time: xxx,
                      }
             }
     '''
@@ -569,22 +571,29 @@ def album_view(request):
                 }
                 ...
                 {
-                    message: xxx,
-                    url : xxx,
+                    content: xxx,(mess)
+                    image : xxx,(url)
                     longitude: xxx,
                     latitude: xxx,
+                    time: xxx,
                 }]
             }
 
     '''
     try:
+        print '========album_view======='
         data = json.loads(request.body)
+        print data
+
         try:
             session_upload = data['session']
+            print session_upload
             user = WxUser.objects.get(session=session_upload)
-
+            print user
             album_id = data['albumID']
+            print album_id
             album = Album.objects.get(album_id=album_id)
+            print album
 
             image_list = []
             for image in album.image_set.all():
@@ -595,7 +604,7 @@ def album_view(request):
                 _dict['longitude'] = '东经：' + image.longitude[0:6] + '°'
                 _dict['latitude'] = '北纬：' + image.latitude[0:6] + '°'
                 image_list.append(_dict)
-
+            print image_list
             return JsonResponse({'status': 'success', 'image': image_list})
         except:
             print 'no user reveal'
