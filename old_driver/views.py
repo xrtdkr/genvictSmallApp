@@ -69,12 +69,15 @@ def wechat_login(request):
             user.session = session_key_wxserver
             user.save()
             # f.close()
-            return JsonResponse({'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver, 'groupID': group_id})
+            return JsonResponse(
+                {'status': 'login success,找到了已经有的用户', 'sessionKey': session_key_wxserver, 'groupID': group_id})
         except:
             # f.write('choice2'+'\n')
             # ''' 数据库中没有现成的用户 '''
             user = WxUser.objects.create(wx_openid=openid, session=session_key_wxserver, group=blank_group)
-            return JsonResponse({'status': 'login success,创建了一个新的用户', 'sessionKey': session_key_wxserver})
+            group_id = user.group.group_id
+            return JsonResponse(
+                {'status': 'login success,创建了一个新的用户', 'sessionKey': session_key_wxserver, 'groupID': group_id})
     except:
         # f = open("wechat_test.txt", "a+")
         # f.write('login failure')
@@ -317,8 +320,9 @@ def dismiss(request):
         # session_upload = request.POST.get('session', '')
         try:
             user = WxUser.objects.get(session=session_upload)
-            group_id = user.group.group_id
+
             if user.isLeader == True:
+                group_id = user.group.group_id
                 Group.objects.get(group_id=group_id).delete()
                 user.group = blank_group
                 user.save()
@@ -579,10 +583,11 @@ def album_view(request):
             image_list = []
             for image in album.image_set.all():
                 _dict = {}
-                _dict['message'] = image.message
-                _dict['url'] = image.url
-                _dict['longitude'] = image.longitude
-                _dict['latitude'] = image.latitude
+                _dict['content'] = image.message
+                _dict['image'] = image.url
+                _dict['time'] = image.datetime
+                _dict['longitude'] = '东经：' + image.longitude + '°'
+                _dict['latitude'] = '北纬：' + image.latitude + '°'
                 image_list.append(_dict)
 
             return JsonResponse({'status': 'success', 'image': image_list})
