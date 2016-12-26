@@ -14,6 +14,8 @@ from django.db.models import Q
 from itertools import chain
 from django.db.models.query import QuerySet
 from django.utils import datetime_safe
+import datetime
+
 
 SUCCESS = 'success'
 blank_group = Group.objects.get(group_id='')
@@ -487,7 +489,7 @@ def create_album(request):
 
                 album_name = data['albumName']
                 print album_name
-                album_id = hashlib.sha1(str(datetime_safe.datetime.now())).hexdigest()
+                album_id = hashlib.sha1(str(datetime.datetime.now())).hexdigest()
                 print album_id
                 album = Album.objects.create(name=album_name, album_id=album_id, user=user)
                 print album
@@ -592,7 +594,7 @@ def album_view(request):
             print user
             album_id = data['albumID']
             print album_id
-            album = Album.objects.get(album_id=album_id)
+            album = user.album_set.get(album_id=album_id)
             print album
 
             image_list = []
