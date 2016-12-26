@@ -30,8 +30,10 @@ urlpatterns = [
     url(r'^dismiss/', 'old_driver.views.dismiss'),
     url(r'^changeState/', 'old_driver.views.change_state'),
     url(r'^refreshPic/', 'old_driver.views.refresh_pic'),
+
+    url(r'^createAlbum/', 'old_driver.views.create_album'),
     url(r'^albumView/', 'old_driver.views.album_view'),
     url(r'^albumSet/', 'old_driver.views.album_set'),
-    url(r'^createAlbum/', 'old_driver.views.create_album'),
+
 ]
 

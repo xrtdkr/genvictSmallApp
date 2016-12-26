@@ -270,12 +270,10 @@ def refresh(request):
             longitude = data['longitude']
             latitude = data['latitude']
             # state = data['state']
-            # group_id = data['groupID']
-
+            group_id = data['groupID']
             # longitude = request.POST.get('longitude', '')
             # latitude = request.POST.get('latitude', '')
             # state = request.POST.get('state', '')
-
             # save the attr
             user.longitude = longitude
             user.latitude = latitude
@@ -327,9 +325,9 @@ def dismiss(request):
 
             if user.isLeader == True:
                 group_id = user.group.group_id
-                Group.objects.get(group_id=group_id).delete()
                 user.group = blank_group
                 user.save()
+                Group.objects.get(group_id=group_id).delete()
                 return JsonResponse({'status': 'success, leader dismiss'})
             else:
                 user.group = blank_group
@@ -488,8 +486,11 @@ def create_album(request):
                 print 'start to build album'
 
                 album_name = data['albumName']
+                print album_name
                 album_id = hashlib.sha1(album_name).hexdigest()
+                print album_id
                 album = Album.objects.create(name=album_name, album_id=album_id, user=user)
+                print album
                 images = Image.objects.filter(group=group_id)
                 for image in images:
                     image.album = album
@@ -560,10 +561,11 @@ def album_view(request):
     return:{
             status:success
             image:[{
-                    message: xxx,
-                    url : xxx,
+                    content: xxx,(mess)
+                    image : xxx,(url)
                     longitude: xxx,
                     latitude: xxx,
+                    time: xxx,
                 }
                 ...
                 {
@@ -590,8 +592,8 @@ def album_view(request):
                 _dict['content'] = image.message
                 _dict['image'] = image.url
                 _dict['time'] = image.datetime
-                _dict['longitude'] = '东经：' + image.longitude + '°'
-                _dict['latitude'] = '北纬：' + image.latitude + '°'
+                _dict['longitude'] = '东经：' + image.longitude[0:6] + '°'
+                _dict['latitude'] = '北纬：' + image.latitude[0:6] + '°'
                 image_list.append(_dict)
 
             return JsonResponse({'status': 'success', 'image': image_list})
