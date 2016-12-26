@@ -159,23 +159,26 @@ def change_state(request):
 
 
 def new_group(request):
+    print '======new_group======'
     try:
         data = json.loads(request.body)
-        print 'data: '
-        print data
         session_upload = data['session']
-
+        print 'session: '
+        print session_upload
         # session_upload = request.POST.get('session', '')
         # for user in WxUser.objects.all():
         #     f.write(user.session)
-
         try:
             user = WxUser.objects.get(session=session_upload)
+            print 'user: '
+            print user
+
             group_id = user.group.group_id
-            print 'group id is: '
+            print 'group_id: '
             print group_id
+
             if group_id:
-                print 'group id is not blank'
+                print 'group id is '
                 return JsonResponse({'status': 'fail, user has in a group', 'groupID': group_id})
             else:
                 group_id = random_num_string()
