@@ -270,7 +270,7 @@ def refresh(request):
             longitude = data['longitude']
             latitude = data['latitude']
             # state = data['state']
-            group_id = data['groupID']
+            # group_id = data['groupID']
 
             # longitude = request.POST.get('longitude', '')
             # latitude = request.POST.get('latitude', '')
