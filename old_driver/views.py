@@ -410,7 +410,7 @@ def new_pic(request):
             print " request.POST:  "
             print request.POST
             print "direct  "
-            content = unquote(request.POST['content'])
+            content = request.POST.get('content', '')
             print 'content: '
             print content
             # ==== = == = = == = beng = = ==
