@@ -601,10 +601,15 @@ def album_view(request):
             for image in album.image_set.all():
                 _dict = {}
                 _dict['content'] = image.message
+                print 'content ok '
                 _dict['image'] = image.url
+                print 'image ok'
                 _dict['time'] = image.datetime
-                _dict['longitude'] = '东经：' + image.longitude[0:6] + '°'
-                _dict['latitude'] = '北纬：' + image.latitude[0:6] + '°'
+                print 'time ok'
+                _dict['longitude'] = '东经：' + str(image.longitude) + '°'
+                print 'longitude ok '
+                _dict['latitude'] = '北纬：' + str(image.latitude) + '°'
+                print 'latitude ok'
                 image_list.append(_dict)
             print image_list
             return JsonResponse({'status': 'success', 'image': image_list})
